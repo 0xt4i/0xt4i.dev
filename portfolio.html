@@ -7,6 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Marked.js for Markdown parsing -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Fuse.js for fuzzy search -->
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -89,6 +91,65 @@
         html.light .modal-content {
             background: #FFFFFF !important;
             border-color: rgba(124, 58, 237, 0.3) !important;
+        }
+
+        /* Search Modal Light Mode */
+        html.light #search-modal {
+            background: rgba(248, 250, 252, 0.95) !important;
+        }
+
+        html.light #search-input {
+            background-color: #FFFFFF !important;
+            border-color: rgba(124, 58, 237, 0.4) !important;
+            color: #1E293B !important;
+        }
+
+        html.light #search-input::placeholder {
+            color: #94A3B8 !important;
+        }
+
+        html.light #search-results {
+            color: #1E293B !important;
+        }
+
+        html.light .border-primary\/30 {
+            border-color: rgba(124, 58, 237, 0.4) !important;
+        }
+
+        html.light .border-secondary\/40 {
+            border-color: rgba(6, 182, 212, 0.4) !important;
+        }
+
+        html.light .border-accent\/40 {
+            border-color: rgba(167, 139, 250, 0.4) !important;
+        }
+
+        html.light .border-accent\/20 {
+            border-color: rgba(167, 139, 250, 0.3) !important;
+        }
+
+        /* Light mode for filter buttons */
+        html.light .filter-nav-btn {
+            background-color: #F1F5F9 !important;
+            color: #475569 !important;
+        }
+
+        html.light .filter-nav-btn.active {
+            color: #7C3AED !important;
+        }
+
+        html.light .filter-nav-btn:hover {
+            background-color: rgba(124, 58, 237, 0.1) !important;
+        }
+
+        /* Light mode for search filter buttons */
+        html.light .search-filter-btn {
+            border: 1px solid rgba(124, 58, 237, 0.3) !important;
+        }
+
+        /* Light mode text colors for search */
+        html.light .text-gray-600 {
+            color: #475569 !important;
         }
 
         /* Neon glow effects */
@@ -249,6 +310,13 @@
                     <a href="#blog" class="text-gray-300 hover:text-secondary transition-colors duration-200 font-mono text-sm">$ blog</a>
                     <a href="#contact" class="text-gray-300 hover:text-secondary transition-colors duration-200 font-mono text-sm">$ contact</a>
 
+                    <!-- Search Button -->
+                    <button id="search-toggle" class="text-gray-300 hover:text-secondary transition-colors duration-200 cursor-pointer" aria-label="Search">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </button>
+
                     <!-- Dark/Light Mode Toggle -->
                     <button id="theme-toggle" class="text-gray-300 hover:text-secondary transition-colors duration-200 cursor-pointer" aria-label="Toggle theme">
                         <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
@@ -273,8 +341,37 @@
         </div>
     </nav>
 
+    <!-- Filter Navigation Bar -->
+    <div class="fixed top-24 left-4 right-4 z-40">
+        <div class="max-w-7xl mx-auto bg-dark-800/80 backdrop-blur-lg rounded-xl border border-primary/20 px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <span class="text-gray-400 text-xs font-mono mr-2">Filter by:</span>
+                    <button class="filter-nav-btn active bg-primary/20 hover:bg-primary/30 text-primary px-4 py-2 rounded-lg transition-all duration-200 font-mono text-sm border border-primary/40" data-filter="all">
+                        All
+                    </button>
+                    <button class="filter-nav-btn bg-dark-700/50 hover:bg-primary/20 text-gray-300 hover:text-primary px-4 py-2 rounded-lg transition-all duration-200 font-mono text-sm border border-transparent hover:border-primary/40" data-filter="projects">
+                        Projects
+                    </button>
+                    <button class="filter-nav-btn bg-dark-700/50 hover:bg-secondary/20 text-gray-300 hover:text-secondary px-4 py-2 rounded-lg transition-all duration-200 font-mono text-sm border border-transparent hover:border-secondary/40" data-filter="hands-on">
+                        Hands-On Labs
+                    </button>
+                    <button class="filter-nav-btn bg-dark-700/50 hover:bg-accent/20 text-gray-300 hover:text-accent px-4 py-2 rounded-lg transition-all duration-200 font-mono text-sm border border-transparent hover:border-accent/40" data-filter="blog">
+                        Blog
+                    </button>
+                    <button class="filter-nav-btn bg-dark-700/50 hover:bg-primary/20 text-gray-300 hover:text-primary px-4 py-2 rounded-lg transition-all duration-200 font-mono text-sm border border-transparent hover:border-primary/40" data-filter="certifications">
+                        Certifications
+                    </button>
+                </div>
+                <div class="text-gray-400 text-xs font-mono">
+                    <span id="filter-count">Showing all content</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-24 pb-16 overflow-hidden grid-bg">
+    <section class="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-40 pb-16 overflow-hidden grid-bg">
         <!-- Animated background elements -->
         <div class="absolute top-20 left-10 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
         <div class="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
@@ -482,43 +579,65 @@
                 </h2>
                 <div class="h-1 w-24 bg-gradient-to-r from-primary to-secondary"></div>
                 <p class="text-gray-400 mt-4 font-mono text-sm">
-                    Click on any badge to read my journey and hands-on experience
+                    <span class="text-primary">Click on any badge</span> to read my <span class="text-accent">journey and hands-on experience</span> • <span class="text-secondary font-semibold">Bonus:</span> <span class="text-primary">Click the logo</span> to <span class="text-accent">verify certification</span> on Credly
                 </p>
             </div>
 
             <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 <!-- AWS SAA Certification Badge -->
-                <div class="badge-card bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl p-8 text-center" onclick="window.location.href='certifications/saa.html'">
-                    <div class="bg-gradient-to-br from-orange-500/20 to-orange-600/20 rounded-lg p-10 mb-6">
-                        <svg class="w-24 h-24 mx-auto text-orange-500" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M6.763 10.036c0 .296.032.535.088.71.064.176.144.368.256.576.04.063.056.127.056.183 0 .08-.048.16-.152.24l-.503.335c-.072.048-.144.072-.208.072-.08 0-.16-.04-.239-.112-.112-.12-.207-.248-.279-.384-.072-.144-.144-.304-.224-.488-.56.66-1.263.988-2.095.988-.599 0-1.079-.17-1.431-.517-.353-.344-.528-.804-.528-1.375 0-.608.215-1.103.656-1.471.44-.368 1.023-.552 1.759-.552.247 0 .503.016.76.056.264.04.535.088.815.152v-.503c0-.52-.104-.887-.32-1.095-.208-.208-.568-.312-1.088-.312-.24 0-.487.032-.744.08-.255.048-.503.12-.735.2-.112.04-.191.064-.247.072-.056.008-.096.016-.128.016-.112 0-.168-.08-.168-.248v-.391c0-.128.016-.224.056-.28.04-.056.112-.104.216-.152.24-.127.527-.231.855-.328.336-.096.687-.144 1.063-.144.808 0 1.399.184 1.783.56.376.368.568.927.568 1.679v2.207zm-2.894 1.087c.24 0 .487-.04.751-.127.264-.088.496-.256.696-.512.12-.151.207-.32.256-.506.048-.184.08-.407.08-.662v-.32c-.216-.047-.44-.087-.671-.111-.231-.024-.455-.04-.671-.04-.479 0-.831.096-1.055.287-.224.192-.336.463-.336.807 0 .328.08.575.247.743.16.175.431.255.743.255zm5.783 1.535c-.144 0-.24-.024-.304-.08-.064-.048-.12-.16-.168-.311L7.586 5.55c-.048-.16-.072-.264-.072-.32 0-.128.064-.2.191-.2h.783c.151 0 .255.025.311.08.064.048.112.16.16.312l1.343 5.295 1.247-5.295c.04-.16.088-.264.151-.312.064-.048.175-.08.319-.08h.64c.151 0 .255.025.319.08.064.048.12.16.151.312l1.264 5.358 1.383-5.358c.048-.16.104-.264.16-.312.063-.048.167-.08.311-.08h.743c.128 0 .2.065.2.2 0 .04-.009.08-.017.128-.008.048-.024.12-.056.216l-1.927 6.717c-.048.16-.104.263-.168.311-.064.056-.168.08-.312.08h-.687c-.151 0-.255-.024-.319-.08-.064-.048-.12-.159-.151-.311L13.48 7.558l-1.231 5.286c-.04.16-.088.264-.151.312-.064.056-.175.08-.32.08h-.687zm9.207.191c-.735 0-1.471-.088-2.127-.256-.655-.168-1.159-.368-1.511-.599-.127-.088-.215-.184-.247-.28-.032-.096-.056-.2-.056-.312v-.407c0-.168.064-.248.183-.248.048 0 .096.008.144.024.048.016.12.048.2.08.271.12.559.215.855.279.304.072.6.104.903.104.506 0 .895-.088 1.167-.264.271-.176.415-.423.415-.743 0-.216-.064-.4-.2-.543-.135-.144-.431-.272-.791-.4l-1.135-.36c-.575-.183-1-.455-1.247-.807-.247-.353-.375-.743-.375-1.168 0-.336.072-.631.216-.895.144-.264.336-.487.575-.671.24-.184.52-.32.848-.415.327-.096.679-.136 1.054-.136.144 0 .296.008.44.024.151.016.296.04.431.064.128.024.255.056.375.088.12.032.216.064.287.096.104.048.183.096.232.151.048.049.08.136.08.256v.375c0 .168-.064.256-.184.256-.063 0-.167-.024-.303-.08-.48-.216-1.023-.32-1.631-.32-.455 0-.815.072-1.055.216-.24.144-.36.368-.36.679 0 .216.072.407.215.559.144.151.44.287.808.415l1.111.36c.567.183.983.439 1.223.767.24.329.36.703.36 1.119 0 .343-.072.655-.207.927-.144.272-.336.511-.591.703-.248.2-.559.343-.927.447-.36.111-.767.167-1.222.167z"/>
-                        </svg>
+                <div class="badge-card bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl p-8 text-center relative overflow-hidden" onclick="window.location.href='certifications/saa.html'">
+                    <!-- Animated Background -->
+                    <div class="absolute inset-0 opacity-20">
+                        <div class="absolute inset-0 bg-gradient-to-br from-gray-500/30 via-gray-400/20 to-gray-600/30 animate-pulse"></div>
+                        <div class="absolute inset-0" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(156, 163, 175, 0.03) 2px, rgba(156, 163, 175, 0.03) 4px), repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(156, 163, 175, 0.03) 2px, rgba(156, 163, 175, 0.03) 4px);"></div>
                     </div>
-                    <h3 class="text-xl font-mono font-semibold text-gray-100 mb-3">AWS Solutions Architect Associate</h3>
-                    <p class="text-gray-400 text-base mb-3">SAA-C03 Certified</p>
-                    <div class="flex items-center justify-center gap-2 mb-4">
-                        <span class="inline-block bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-xs font-mono">Certified</span>
+                    <div class="relative bg-gradient-to-br from-gray-500/20 to-gray-600/20 rounded-lg p-10 mb-6 flex items-center justify-center backdrop-blur-sm border border-gray-500/30 shadow-[0_0_30px_rgba(156,163,175,0.3)] group">
+                        <a href="https://www.credly.com/badges/84b75197-ead1-4b3e-a651-88ba861c8fb7/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="relative z-10">
+                            <div class="relative inline-block">
+                                <img src="https://blog.ippon.fr/content/images/2023/05/AWS_SAA_badge-1.png" alt="AWS SAA Badge" class="w-32 h-32 object-contain drop-shadow-[0_0_15px_rgba(156,163,175,0.5)] animate-[pulse_3s_ease-in-out_infinite] transition-transform duration-500 group-hover:scale-125">
+                                <!-- Status Badge -->
+                                <div class="absolute -top-2 -right-2 bg-primary text-white text-xs font-mono font-bold px-2 py-1 rounded-full border-2 border-dark-900 shadow-lg">
+                                    2026
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <h3 class="text-xl font-mono font-semibold text-gray-100 mb-3 relative">AWS Solutions Architect Associate</h3>
+                    <p class="text-gray-400 text-base mb-3 relative">SAA-C03 Journey</p>
+                    <div class="flex items-center justify-center gap-2 mb-4 relative">
+                        <span class="inline-block bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-mono">Plan 2026</span>
                         <span class="text-gray-500 text-xs">•</span>
-                        <span class="text-gray-500 text-xs font-mono">March 2024</span>
+                        <span class="text-gray-500 text-xs font-mono">In Progress</span>
                     </div>
-                    <span class="inline-block bg-primary/20 text-primary px-4 py-2 rounded-full text-sm font-mono hover:bg-primary/30 transition-colors">Read story & notes →</span>
+                    <span class="inline-block bg-primary/20 text-primary px-4 py-2 rounded-full text-sm font-mono hover:bg-primary/30 transition-colors relative">Read roadmap & notes →</span>
                 </div>
 
                 <!-- OSCP Plan 2026 Badge -->
-                <div class="badge-card bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl p-8 text-center" onclick="window.location.href='certifications/oscp-2026.html'">
-                    <div class="bg-gradient-to-br from-red-500/20 to-red-600/20 rounded-lg p-10 mb-6">
-                        <svg class="w-24 h-24 mx-auto text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                        </svg>
+                <div class="badge-card bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl p-8 text-center relative overflow-hidden" onclick="window.location.href='certifications/oscp-2026.html'">
+                    <!-- Animated Background -->
+                    <div class="absolute inset-0 opacity-20">
+                        <div class="absolute inset-0 bg-gradient-to-br from-gray-500/30 via-gray-400/20 to-gray-600/30 animate-pulse"></div>
+                        <div class="absolute inset-0" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(156, 163, 175, 0.03) 2px, rgba(156, 163, 175, 0.03) 4px), repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(156, 163, 175, 0.03) 2px, rgba(156, 163, 175, 0.03) 4px);"></div>
                     </div>
-                    <h3 class="text-xl font-mono font-semibold text-gray-100 mb-3">Offensive Security Certified Professional</h3>
-                    <p class="text-gray-400 text-base mb-3">OSCP Journey</p>
-                    <div class="flex items-center justify-center gap-2 mb-4">
+                    <div class="relative bg-gradient-to-br from-gray-500/20 to-gray-600/20 rounded-lg p-10 mb-6 flex items-center justify-center backdrop-blur-sm border border-gray-500/30 shadow-[0_0_30px_rgba(156,163,175,0.3)] group">
+                        <a href="https://www.credly.com/badges/1ce46044-8d61-4527-bf1f-d5833f0a4869/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="relative z-10">
+                            <div class="relative inline-block">
+                                <img src="https://images.credly.com/images/ec81134d-e80b-4eb5-ae07-0eb8e1a60fcd/image.png" alt="OSCP Badge" class="w-32 h-32 object-contain drop-shadow-[0_0_15px_rgba(156,163,175,0.5)] animate-[pulse_3s_ease-in-out_infinite] transition-transform duration-500 group-hover:scale-125">
+                                <!-- Status Badge -->
+                                <div class="absolute -top-2 -right-2 bg-secondary text-white text-xs font-mono font-bold px-2 py-1 rounded-full border-2 border-dark-900 shadow-lg">
+                                    2026
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <h3 class="text-xl font-mono font-semibold text-gray-100 mb-3 relative">Offensive Security Certified Professional</h3>
+                    <p class="text-gray-400 text-base mb-3 relative">OSCP Journey</p>
+                    <div class="flex items-center justify-center gap-2 mb-4 relative">
                         <span class="inline-block bg-secondary/20 text-secondary px-3 py-1 rounded-full text-xs font-mono">Plan 2026</span>
                         <span class="text-gray-500 text-xs">•</span>
                         <span class="text-gray-500 text-xs font-mono">In Progress</span>
                     </div>
-                    <span class="inline-block bg-secondary/20 text-secondary px-4 py-2 rounded-full text-sm font-mono hover:bg-secondary/30 transition-colors">Read roadmap & labs →</span>
+                    <span class="inline-block bg-secondary/20 text-secondary px-4 py-2 rounded-full text-sm font-mono hover:bg-secondary/30 transition-colors relative">Read roadmap & labs →</span>
                 </div>
             </div>
         </div>
@@ -654,6 +773,12 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <a href="hands-on.html" class="inline-block bg-dark-800/80 backdrop-blur-sm hover:bg-dark-700 text-gray-100 px-8 py-4 rounded-lg font-mono border border-secondary/40 hover:border-secondary transition-all duration-200 cursor-pointer">
+                    View All Labs →
+                </a>
             </div>
         </div>
     </section>
@@ -861,7 +986,7 @@
             </div>
 
             <div class="text-center mt-12">
-                <a href="#" class="inline-block bg-dark-800/80 backdrop-blur-sm hover:bg-dark-700 text-gray-100 px-8 py-4 rounded-lg font-mono border border-secondary/40 hover:border-secondary transition-all duration-200 cursor-pointer">
+                <a href="blog.html" class="inline-block bg-dark-800/80 backdrop-blur-sm hover:bg-dark-700 text-gray-100 px-8 py-4 rounded-lg font-mono border border-secondary/40 hover:border-secondary transition-all duration-200 cursor-pointer">
                     View All Posts →
                 </a>
             </div>
@@ -2186,6 +2311,319 @@ $ echo "attacker ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers</code></pre>
                 }
             });
         }
+    </script>
+
+    <!-- Search Modal -->
+    <div id="search-modal" class="fixed inset-0 bg-dark-900/90 backdrop-blur-lg z-50 hidden">
+        <div class="max-w-4xl mx-auto px-4 py-8 h-full flex flex-col">
+            <!-- Search Header -->
+            <div class="mb-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-mono font-bold text-gray-100">
+                        <span class="text-secondary">#</span> Search Portfolio
+                    </h2>
+                    <button id="search-close" class="text-gray-400 hover:text-gray-100 transition-colors cursor-pointer">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Search Input -->
+                <div class="relative">
+                    <input
+                        type="text"
+                        id="search-input"
+                        placeholder="Search projects, tutorials, blog posts... (e.g., 'kubernetes', 'terraform', 'security')"
+                        class="w-full bg-dark-800 border border-primary/30 rounded-lg px-4 py-3 pl-12 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-primary font-mono"
+                        autocomplete="off"
+                    />
+                    <svg class="w-5 h-5 absolute left-4 top-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </div>
+
+                <!-- Quick Filters -->
+                <div class="flex flex-wrap gap-2 mt-4">
+                    <span class="text-gray-400 text-sm font-mono">Quick filters:</span>
+                    <button class="search-filter-btn bg-primary/20 hover:bg-primary/30 text-primary px-3 py-1 rounded text-xs font-mono transition-colors cursor-pointer" data-search="DevOps">DevOps</button>
+                    <button class="search-filter-btn bg-secondary/20 hover:bg-secondary/30 text-secondary px-3 py-1 rounded text-xs font-mono transition-colors cursor-pointer" data-search="Security">Security</button>
+                    <button class="search-filter-btn bg-primary/20 hover:bg-primary/30 text-primary px-3 py-1 rounded text-xs font-mono transition-colors cursor-pointer" data-search="Kubernetes">Kubernetes</button>
+                    <button class="search-filter-btn bg-secondary/20 hover:bg-secondary/30 text-secondary px-3 py-1 rounded text-xs font-mono transition-colors cursor-pointer" data-search="Terraform">Terraform</button>
+                    <button class="search-filter-btn bg-primary/20 hover:bg-primary/30 text-primary px-3 py-1 rounded text-xs font-mono transition-colors cursor-pointer" data-search="CI/CD">CI/CD</button>
+                </div>
+            </div>
+
+            <!-- Search Results -->
+            <div id="search-results" class="flex-1 overflow-y-auto">
+                <div class="text-center py-12 text-gray-400 font-mono">
+                    Type to search across all content...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Data Script -->
+    <script src="search-data.js"></script>
+
+    <!-- Search & Filter Logic -->
+    <script>
+        // Initialize search functionality
+        let fuseInstance = null;
+
+        async function initSearch() {
+            // Load blog posts for search
+            await loadBlogPostsForSearch();
+
+            // Get all searchable content
+            const allContent = getAllSearchableContent();
+
+            // Configure Fuse.js
+            const fuseOptions = {
+                keys: [
+                    { name: 'title', weight: 0.4 },
+                    { name: 'description', weight: 0.3 },
+                    { name: 'tags', weight: 0.2 },
+                    { name: 'category', weight: 0.1 }
+                ],
+                threshold: 0.3,
+                includeScore: true,
+                minMatchCharLength: 2
+            };
+
+            fuseInstance = new Fuse(allContent, fuseOptions);
+        }
+
+        // Open/Close search modal
+        document.getElementById('search-toggle').addEventListener('click', () => {
+            document.getElementById('search-modal').classList.remove('hidden');
+            document.getElementById('search-input').focus();
+        });
+
+        document.getElementById('search-close').addEventListener('click', () => {
+            document.getElementById('search-modal').classList.add('hidden');
+            document.getElementById('search-input').value = '';
+            document.getElementById('search-results').innerHTML = '<div class="text-center py-12 text-gray-400 font-mono">Type to search across all content...</div>';
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !document.getElementById('search-modal').classList.contains('hidden')) {
+                document.getElementById('search-close').click();
+            }
+        });
+
+        // Perform search
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const query = e.target.value.trim();
+
+            if (query.length < 2) {
+                document.getElementById('search-results').innerHTML = '<div class="text-center py-12 text-gray-400 font-mono">Type to search across all content...</div>';
+                return;
+            }
+
+            performSearch(query);
+        });
+
+        // Quick filter buttons in search modal
+        document.querySelectorAll('.search-filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const filter = btn.getAttribute('data-search');
+                document.getElementById('search-input').value = filter;
+                performSearch(filter);
+            });
+        });
+
+        function performSearch(query) {
+            if (!fuseInstance) return;
+
+            const results = fuseInstance.search(query);
+            displayResults(results, query);
+        }
+
+        function displayResults(results, query) {
+            const resultsContainer = document.getElementById('search-results');
+
+            if (results.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="text-center py-12">
+                        <svg class="w-16 h-16 text-gray-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <p class="text-gray-400 font-mono">No results found for "${query}"</p>
+                        <p class="text-gray-500 text-sm font-mono mt-2">Try different keywords or use quick filters</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Group results by type
+            const grouped = groupResultsByType(results);
+
+            let html = `<div class="space-y-8">`;
+
+            // Projects Section
+            if (grouped.projects.length > 0) {
+                html += `
+                    <div>
+                        <h3 class="text-xl font-mono font-semibold text-primary mb-4">
+                            Projects <span class="text-gray-500 text-sm">(${grouped.projects.length})</span>
+                        </h3>
+                        <div class="space-y-4">
+                            ${grouped.projects.map(item => createResultCard(item)).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Hands-On Labs Section
+            if (grouped.handsOn.length > 0) {
+                html += `
+                    <div>
+                        <h3 class="text-xl font-mono font-semibold text-secondary mb-4">
+                            Hands-On Labs & Tutorials <span class="text-gray-500 text-sm">(${grouped.handsOn.length})</span>
+                        </h3>
+                        <div class="space-y-4">
+                            ${grouped.handsOn.map(item => createResultCard(item)).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Blog Posts Section
+            if (grouped.blog.length > 0) {
+                html += `
+                    <div>
+                        <h3 class="text-xl font-mono font-semibold text-accent mb-4">
+                            Blog Posts <span class="text-gray-500 text-sm">(${grouped.blog.length})</span>
+                        </h3>
+                        <div class="space-y-4">
+                            ${grouped.blog.map(item => createResultCard(item)).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += `</div>`;
+            resultsContainer.innerHTML = html;
+        }
+
+        function createResultCard(item) {
+            const typeColor = {
+                'project': 'primary',
+                'hands-on': 'secondary',
+                'blog': 'accent'
+            }[item.type];
+
+            const typeLabel = {
+                'project': 'Project',
+                'hands-on': 'Hands-On',
+                'blog': 'Blog'
+            }[item.type];
+
+            return `
+                <a href="${item.link}" class="block bg-dark-800/50 border border-${typeColor}/20 rounded-lg p-4 hover:bg-dark-800 hover:border-${typeColor}/40 transition-all cursor-pointer">
+                    <div class="flex items-start justify-between mb-2">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="bg-${typeColor}/20 text-${typeColor} px-2 py-1 rounded text-xs font-mono">${typeLabel}</span>
+                                <span class="bg-dark-700 text-gray-300 px-2 py-1 rounded text-xs font-mono">${item.category}</span>
+                            </div>
+                            <h4 class="text-lg font-mono font-semibold text-gray-100 mb-2">${item.title}</h4>
+                            <p class="text-gray-400 text-sm mb-3">${item.description}</p>
+                            <div class="flex flex-wrap gap-2">
+                                ${item.tags.slice(0, 5).map(tag => `
+                                    <span class="bg-dark-700/50 text-gray-400 px-2 py-1 rounded text-xs font-mono">${tag}</span>
+                                `).join('')}
+                                ${item.tags.length > 5 ? `<span class="text-gray-500 text-xs font-mono">+${item.tags.length - 5} more</span>` : ''}
+                            </div>
+                        </div>
+                        ${item.readTime ? `
+                            <div class="ml-4 text-gray-500 text-xs font-mono whitespace-nowrap">${item.readTime}</div>
+                        ` : ''}
+                    </div>
+                </a>
+            `;
+        }
+
+        // Filter Navigation Logic
+        document.querySelectorAll('.filter-nav-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const filter = this.getAttribute('data-filter');
+
+                // Update active state
+                document.querySelectorAll('.filter-nav-btn').forEach(b => {
+                    b.classList.remove('active', 'bg-primary/20', 'bg-secondary/20', 'bg-accent/20', 'text-primary', 'text-secondary', 'text-accent', 'border-primary/40', 'border-secondary/40', 'border-accent/40');
+                    b.classList.add('bg-dark-700/50', 'text-gray-300', 'border-transparent');
+                });
+
+                // Set active button style
+                this.classList.remove('bg-dark-700/50', 'text-gray-300', 'border-transparent');
+                this.classList.add('active');
+
+                // Apply color based on filter
+                if (filter === 'all' || filter === 'projects' || filter === 'certifications') {
+                    this.classList.add('bg-primary/20', 'text-primary', 'border-primary/40');
+                } else if (filter === 'hands-on') {
+                    this.classList.add('bg-secondary/20', 'text-secondary', 'border-secondary/40');
+                } else if (filter === 'blog') {
+                    this.classList.add('bg-accent/20', 'text-accent', 'border-accent/40');
+                }
+
+                // Filter content
+                filterContent(filter);
+            });
+        });
+
+        function filterContent(filter) {
+            const sections = {
+                'projects': document.getElementById('projects'),
+                'hands-on': document.getElementById('hands-on'),
+                'blog': document.getElementById('blog'),
+                'certifications': document.getElementById('certifications')
+            };
+
+            let visibleCount = 0;
+
+            if (filter === 'all') {
+                // Show all sections
+                Object.values(sections).forEach(section => {
+                    if (section) {
+                        section.style.display = 'block';
+                        visibleCount++;
+                    }
+                });
+                document.getElementById('filter-count').textContent = 'Showing all content';
+            } else {
+                // Hide all sections first
+                Object.values(sections).forEach(section => {
+                    if (section) section.style.display = 'none';
+                });
+
+                // Show selected section
+                if (sections[filter]) {
+                    sections[filter].style.display = 'block';
+                    visibleCount = 1;
+
+                    const filterNames = {
+                        'projects': 'Projects',
+                        'hands-on': 'Hands-On Labs',
+                        'blog': 'Blog Posts',
+                        'certifications': 'Certifications'
+                    };
+
+                    document.getElementById('filter-count').textContent = `Showing ${filterNames[filter]}`;
+                }
+            }
+
+            // Scroll to first visible section
+            if (filter !== 'all' && sections[filter]) {
+                sections[filter].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // Initialize search when page loads
+        document.addEventListener('DOMContentLoaded', initSearch);
     </script>
 </body>
 </html>

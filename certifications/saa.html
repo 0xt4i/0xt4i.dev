@@ -201,6 +201,60 @@
                 display: block;
             }
         }
+
+        /* Light Mode Styles */
+        html.light body {
+            background-color: #F8FAFC;
+        }
+
+        html.light .bg-dark-900 { background-color: #FFFFFF !important; }
+        html.light .bg-dark-800 { background-color: #F8FAFC !important; }
+        html.light .bg-dark-700 { background-color: #E2E8F0 !important; }
+        html.light .bg-dark-600 { background-color: #CBD5E1 !important; }
+
+        html.light .text-gray-100 { color: #1E293B !important; }
+        html.light .text-gray-200 { color: #334155 !important; }
+        html.light .text-gray-300 { color: #475569 !important; }
+        html.light .text-gray-400 { color: #64748B !important; }
+        html.light .text-gray-500 { color: #94A3B8 !important; }
+
+        html.light .border-dark-600 { border-color: #E2E8F0 !important; }
+        html.light .border-primary\/20 { border-color: rgba(124, 58, 237, 0.3) !important; }
+        html.light .border-primary\/30 { border-color: rgba(124, 58, 237, 0.3) !important; }
+
+        html.light .sidebar-item:hover {
+            background: rgba(124, 58, 237, 0.08);
+        }
+
+        html.light .sidebar-item.active {
+            background: rgba(124, 58, 237, 0.15);
+        }
+
+        html.light .markdown-content h1,
+        html.light .markdown-content h2,
+        html.light .markdown-content h3,
+        html.light .markdown-content h4 {
+            color: #1E293B !important;
+        }
+
+        html.light .markdown-content p,
+        html.light .markdown-content li,
+        html.light .markdown-content td {
+            color: #334155 !important;
+        }
+
+        html.light .markdown-content pre {
+            background: #F1F5F9 !important;
+            border-color: rgba(124, 58, 237, 0.2) !important;
+        }
+
+        html.light .markdown-content th {
+            background: rgba(124, 58, 237, 0.08) !important;
+        }
+
+        html.light .markdown-content td {
+            border-color: #E2E8F0 !important;
+        }
     </style>
 </head>
 <body class="bg-dark-900 text-gray-100">
@@ -225,14 +279,23 @@
 
                 <!-- Header -->
                 <div class="mb-6">
-                    <div class="flex items-center mb-2">
-                        <svg class="w-8 h-8 text-orange-500 mr-3" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M6.763 10.036c0 .296.032.535.088.71.064.176.144.368.256.576.04.063.056.127.056.183 0 .08-.048.16-.152.24l-.503.335c-.072.048-.144.072-.208.072-.08 0-.16-.04-.239-.112-.112-.12-.207-.248-.279-.384-.072-.144-.144-.304-.224-.488-.56.66-1.263.988-2.095.988-.599 0-1.079-.17-1.431-.517-.353-.344-.528-.804-.528-1.375 0-.608.215-1.103.656-1.471.44-.368 1.023-.552 1.759-.552.247 0 .503.016.76.056.264.04.535.088.815.152v-.503c0-.52-.104-.887-.32-1.095-.208-.208-.568-.312-1.088-.312-.24 0-.487.032-.744.08-.255.048-.503.12-.735.2-.112.04-.191.064-.247.072-.056.008-.096.016-.128.016-.112 0-.168-.08-.168-.248v-.391c0-.128.016-.224.056-.28.04-.056.112-.104.216-.152.24-.127.527-.231.855-.328.336-.096.687-.144 1.063-.144.808 0 1.399.184 1.783.56.376.368.568.927.568 1.679v2.207zm-2.894 1.087c.24 0 .487-.04.751-.127.264-.088.496-.256.696-.512.12-.151.207-.32.256-.506.048-.184.08-.407.08-.662v-.32c-.216-.047-.44-.087-.671-.111-.231-.024-.455-.04-.671-.04-.479 0-.831.096-1.055.287-.224.192-.336.463-.336.807 0 .328.08.575.247.743.16.175.431.255.743.255zm5.783 1.535c-.144 0-.24-.024-.304-.08-.064-.048-.12-.16-.168-.311L7.586 5.55c-.048-.16-.072-.264-.072-.32 0-.128.064-.2.191-.2h.783c.151 0 .255.025.311.08.064.048.112.16.16.312l1.343 5.295 1.247-5.295c.04-.16.088-.264.151-.312.064-.048.175-.08.319-.08h.64c.151 0 .255.025.319.08.064.048.12.16.151.312l1.264 5.358 1.383-5.358c.048-.16.104-.264.16-.312.063-.048.167-.08.311-.08h.743c.128 0 .2.065.2.2 0 .04-.009.08-.017.128-.008.048-.024.12-.056.216l-1.927 6.717c-.048.16-.104.263-.168.311-.064.056-.168.08-.312.08h-.687c-.151 0-.255-.024-.319-.08-.064-.048-.12-.159-.151-.311L13.48 7.558l-1.231 5.286c-.04.16-.088.264-.151.312-.064.056-.175.08-.32.08h-.687zm9.207.191c-.735 0-1.471-.088-2.127-.256-.655-.168-1.159-.368-1.511-.599-.127-.088-.215-.184-.247-.28-.032-.096-.056-.2-.056-.312v-.407c0-.168.064-.248.183-.248.048 0 .096.008.144.024.048.016.12.048.2.08.271.12.559.215.855.279.304.072.6.104.903.104.506 0 .895-.088 1.167-.264.271-.176.415-.423.415-.743 0-.216-.064-.4-.2-.543-.135-.144-.431-.272-.791-.4l-1.135-.36c-.575-.183-1-.455-1.247-.807-.247-.353-.375-.743-.375-1.168 0-.336.072-.631.216-.895.144-.264.336-.487.575-.671.24-.184.52-.32.848-.415.327-.096.679-.136 1.054-.136.144 0 .296.008.44.024.151.016.296.04.431.064.128.024.255.056.375.088.12.032.216.064.287.096.104.048.183.096.232.151.048.049.08.136.08.256v.375c0 .168-.064.256-.184.256-.063 0-.167-.024-.303-.08-.48-.216-1.023-.32-1.631-.32-.455 0-.815.072-1.055.216-.24.144-.36.368-.36.679 0 .216.072.407.215.559.144.151.44.287.808.415l1.111.36c.567.183.983.439 1.223.767.24.329.36.703.36 1.119 0 .343-.072.655-.207.927-.144.272-.336.511-.591.703-.248.2-.559.343-.927.447-.36.111-.767.167-1.222.167z"/>
-                        </svg>
-                        <div>
-                            <h1 class="text-lg font-mono font-bold text-gray-100">AWS SAA</h1>
-                            <p class="text-xs text-gray-400">Solutions Architect Associate</p>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <img src="https://blog.ippon.fr/content/images/2023/05/AWS_SAA_badge-1.png" alt="AWS SAA Badge" class="w-12 h-12 mr-3 object-contain">
+                            <div>
+                                <h1 class="text-lg font-mono font-bold text-gray-100">AWS SAA</h1>
+                                <p class="text-xs text-gray-400">Solutions Architect Associate</p>
+                            </div>
                         </div>
+                        <!-- Theme Toggle -->
+                        <button id="theme-toggle" class="text-gray-300 hover:text-secondary transition-colors cursor-pointer" aria-label="Toggle theme">
+                            <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                            </svg>
+                            <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
                     </div>
                 </div>
 
@@ -459,6 +522,42 @@
             breaks: true,
             gfm: true
         });
+
+        // Theme toggle functionality
+        function initTheme() {
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+            const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+            // Check for saved theme preference or default to dark mode
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+
+            if (savedTheme === 'light') {
+                document.documentElement.classList.add('light');
+                themeToggleLightIcon.classList.remove('hidden');
+            } else {
+                document.documentElement.classList.remove('light');
+                themeToggleDarkIcon.classList.remove('hidden');
+            }
+
+            themeToggleBtn.addEventListener('click', function() {
+                // Toggle icons
+                themeToggleDarkIcon.classList.toggle('hidden');
+                themeToggleLightIcon.classList.toggle('hidden');
+
+                // Toggle theme
+                if (document.documentElement.classList.contains('light')) {
+                    document.documentElement.classList.remove('light');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    document.documentElement.classList.add('light');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        }
+
+        // Initialize theme on load
+        document.addEventListener('DOMContentLoaded', initTheme);
     </script>
 </body>
 </html>
