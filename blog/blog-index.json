@@ -1,0 +1,70 @@
+[
+  {
+    "id": "localstack-cicd",
+    "title": "Building Resilient CI/CD Pipelines with LocalStack",
+    "slug": "localstack-cicd",
+    "date": "2024-12-28",
+    "category": "DevOps",
+    "tags": ["LocalStack", "CI/CD", "Terraform", "AWS"],
+    "excerpt": "Learn how to create robust CI/CD pipelines using LocalStack for local AWS testing. We'll cover infrastructure as code, automated testing, and deployment strategies.",
+    "readTime": "15 min read",
+    "author": "Tai Huu Nguyen",
+    "folder": "localstack-cicd",
+    "series": {
+      "name": "Infrastructure Automation",
+      "part": 1,
+      "total": 2
+    }
+  },
+  {
+    "id": "kubernetes-security",
+    "title": "Kubernetes Security Best Practices for 2024",
+    "slug": "kubernetes-security",
+    "date": "2024-12-25",
+    "category": "Security",
+    "tags": ["Kubernetes", "Security", "RBAC", "DevSecOps"],
+    "excerpt": "Deep dive into Kubernetes security hardening, RBAC policies, network policies, pod security standards, and supply chain security for production clusters.",
+    "readTime": "20 min read",
+    "author": "Tai Huu Nguyen",
+    "folder": "kubernetes-security",
+    "series": {
+      "name": "Security Deep Dive",
+      "part": 1,
+      "total": 2
+    }
+  },
+  {
+    "id": "terraform-ansible",
+    "title": "Automating Infrastructure with Terraform & Ansible",
+    "slug": "terraform-ansible",
+    "date": "2024-12-20",
+    "category": "DevOps",
+    "tags": ["Terraform", "Ansible", "IaC", "Automation"],
+    "excerpt": "Step-by-step guide to combining Terraform for infrastructure provisioning and Ansible for configuration management in multi-cloud environments.",
+    "readTime": "12 min read",
+    "author": "Tai Huu Nguyen",
+    "folder": "terraform-ansible",
+    "series": {
+      "name": "Infrastructure Automation",
+      "part": 2,
+      "total": 2
+    }
+  },
+  {
+    "id": "web-pentesting",
+    "title": "Web Application Penetration Testing Methodology",
+    "slug": "web-pentesting",
+    "date": "2024-12-15",
+    "category": "Security",
+    "tags": ["Pentesting", "OWASP", "Web Security", "Bug Bounty"],
+    "excerpt": "Comprehensive guide to web application penetration testing. From reconnaissance to exploitation, covering OWASP Top 10 vulnerabilities and reporting.",
+    "readTime": "25 min read",
+    "author": "Tai Huu Nguyen",
+    "folder": "web-pentesting",
+    "series": {
+      "name": "Security Deep Dive",
+      "part": 2,
+      "total": 2
+    }
+  }
+]
