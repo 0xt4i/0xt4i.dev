@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS SAA Certification - Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        mono: ['JetBrains Mono', 'monospace'],
+                        sans: ['IBM Plex Sans', 'sans-serif']
+                    },
+                    colors: {
+                        primary: '#7C3AED',
+                        secondary: '#06B6D4',
+                        accent: '#A78BFA',
+                        dark: {
+                            900: '#0A0A0F',
+                            800: '#121218',
+                            700: '#1A1A24',
+                            600: '#2D2D3A'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+        }
+
+        .sidebar-item {
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-item:hover {
+            background: rgba(124, 58, 237, 0.1);
+            border-left: 3px solid #7C3AED;
+        }
+
+        .sidebar-item.active {
+            background: rgba(124, 58, 237, 0.2);
+            border-left: 3px solid #7C3AED;
+        }
+
+        .markdown-content {
+            line-height: 1.8;
+        }
+
+        .markdown-content h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #e5e7eb;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .markdown-content h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #d1d5db;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .markdown-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: #9ca3af;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .markdown-content h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            color: #9ca3af;
+        }
+
+        .markdown-content p {
+            margin-bottom: 1rem;
+            color: #d1d5db;
+        }
+
+        .markdown-content ul, .markdown-content ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            color: #d1d5db;
+        }
+
+        .markdown-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .markdown-content code {
+            background: rgba(124, 58, 237, 0.1);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9em;
+            color: #a78bfa;
+        }
+
+        .markdown-content pre {
+            background: #1a1a24;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(124, 58, 237, 0.2);
+        }
+
+        .markdown-content pre code {
+            background: transparent;
+            padding: 0;
+            color: #e5e7eb;
+        }
+
+        .markdown-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        .markdown-content th, .markdown-content td {
+            border: 1px solid #2d2d3a;
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .markdown-content th {
+            background: rgba(124, 58, 237, 0.1);
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .markdown-content td {
+            color: #d1d5db;
+        }
+
+        .markdown-content a {
+            color: #06B6D4;
+            text-decoration: none;
+        }
+
+        .markdown-content a:hover {
+            text-decoration: underline;
+        }
+
+        .markdown-content blockquote {
+            border-left: 4px solid #7C3AED;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: #9ca3af;
+            font-style: italic;
+        }
+
+        .search-result {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .search-result:hover {
+            background: rgba(124, 58, 237, 0.1);
+        }
+
+        .sidebar-toggle {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                position: fixed;
+                z-index: 50;
+                height: 100vh;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-toggle {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body class="bg-dark-900 text-gray-100">
+    <!-- Mobile Menu Toggle -->
+    <button onclick="toggleSidebar()" class="sidebar-toggle fixed top-4 left-4 z-50 bg-primary/20 p-3 rounded-lg border border-primary/30">
+        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+    </button>
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="sidebar w-80 bg-dark-800 border-r border-dark-600 overflow-y-auto">
+            <div class="p-6">
+                <!-- Back to Portfolio -->
+                <a href="../portfolio.html#certifications" class="flex items-center text-secondary hover:text-primary transition-colors mb-6">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    <span class="font-mono text-sm">Back to Certifications</span>
+                </a>
+
+                <!-- Header -->
+                <div class="mb-6">
+                    <div class="flex items-center mb-2">
+                        <svg class="w-8 h-8 text-orange-500 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M6.763 10.036c0 .296.032.535.088.71.064.176.144.368.256.576.04.063.056.127.056.183 0 .08-.048.16-.152.24l-.503.335c-.072.048-.144.072-.208.072-.08 0-.16-.04-.239-.112-.112-.12-.207-.248-.279-.384-.072-.144-.144-.304-.224-.488-.56.66-1.263.988-2.095.988-.599 0-1.079-.17-1.431-.517-.353-.344-.528-.804-.528-1.375 0-.608.215-1.103.656-1.471.44-.368 1.023-.552 1.759-.552.247 0 .503.016.76.056.264.04.535.088.815.152v-.503c0-.52-.104-.887-.32-1.095-.208-.208-.568-.312-1.088-.312-.24 0-.487.032-.744.08-.255.048-.503.12-.735.2-.112.04-.191.064-.247.072-.056.008-.096.016-.128.016-.112 0-.168-.08-.168-.248v-.391c0-.128.016-.224.056-.28.04-.056.112-.104.216-.152.24-.127.527-.231.855-.328.336-.096.687-.144 1.063-.144.808 0 1.399.184 1.783.56.376.368.568.927.568 1.679v2.207zm-2.894 1.087c.24 0 .487-.04.751-.127.264-.088.496-.256.696-.512.12-.151.207-.32.256-.506.048-.184.08-.407.08-.662v-.32c-.216-.047-.44-.087-.671-.111-.231-.024-.455-.04-.671-.04-.479 0-.831.096-1.055.287-.224.192-.336.463-.336.807 0 .328.08.575.247.743.16.175.431.255.743.255zm5.783 1.535c-.144 0-.24-.024-.304-.08-.064-.048-.12-.16-.168-.311L7.586 5.55c-.048-.16-.072-.264-.072-.32 0-.128.064-.2.191-.2h.783c.151 0 .255.025.311.08.064.048.112.16.16.312l1.343 5.295 1.247-5.295c.04-.16.088-.264.151-.312.064-.048.175-.08.319-.08h.64c.151 0 .255.025.319.08.064.048.12.16.151.312l1.264 5.358 1.383-5.358c.048-.16.104-.264.16-.312.063-.048.167-.08.311-.08h.743c.128 0 .2.065.2.2 0 .04-.009.08-.017.128-.008.048-.024.12-.056.216l-1.927 6.717c-.048.16-.104.263-.168.311-.064.056-.168.08-.312.08h-.687c-.151 0-.255-.024-.319-.08-.064-.048-.12-.159-.151-.311L13.48 7.558l-1.231 5.286c-.04.16-.088.264-.151.312-.064.056-.175.08-.32.08h-.687zm9.207.191c-.735 0-1.471-.088-2.127-.256-.655-.168-1.159-.368-1.511-.599-.127-.088-.215-.184-.247-.28-.032-.096-.056-.2-.056-.312v-.407c0-.168.064-.248.183-.248.048 0 .096.008.144.024.048.016.12.048.2.08.271.12.559.215.855.279.304.072.6.104.903.104.506 0 .895-.088 1.167-.264.271-.176.415-.423.415-.743 0-.216-.064-.4-.2-.543-.135-.144-.431-.272-.791-.4l-1.135-.36c-.575-.183-1-.455-1.247-.807-.247-.353-.375-.743-.375-1.168 0-.336.072-.631.216-.895.144-.264.336-.487.575-.671.24-.184.52-.32.848-.415.327-.096.679-.136 1.054-.136.144 0 .296.008.44.024.151.016.296.04.431.064.128.024.255.056.375.088.12.032.216.064.287.096.104.048.183.096.232.151.048.049.08.136.08.256v.375c0 .168-.064.256-.184.256-.063 0-.167-.024-.303-.08-.48-.216-1.023-.32-1.631-.32-.455 0-.815.072-1.055.216-.24.144-.36.368-.36.679 0 .216.072.407.215.559.144.151.44.287.808.415l1.111.36c.567.183.983.439 1.223.767.24.329.36.703.36 1.119 0 .343-.072.655-.207.927-.144.272-.336.511-.591.703-.248.2-.559.343-.927.447-.36.111-.767.167-1.222.167z"/>
+                        </svg>
+                        <div>
+                            <h1 class="text-lg font-mono font-bold text-gray-100">AWS SAA</h1>
+                            <p class="text-xs text-gray-400">Solutions Architect Associate</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search -->
+                <div class="mb-6">
+                    <div class="relative">
+                        <input
+                            type="text"
+                            id="search-input"
+                            placeholder="Search documentation..."
+                            class="w-full bg-dark-700 text-gray-100 px-4 py-2 pl-10 rounded-lg border border-dark-600 focus:border-primary focus:outline-none font-mono text-sm"
+                            oninput="performSearch()"
+                        >
+                        <svg class="absolute left-3 top-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+
+                    <!-- Search Results -->
+                    <div id="search-results" class="mt-2 hidden"></div>
+                </div>
+
+                <!-- Document List -->
+                <div class="space-y-1">
+                    <h3 class="text-xs font-mono font-semibold text-gray-500 uppercase mb-2 px-3">Documentation</h3>
+                    <div id="doc-list"></div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto">
+            <div class="max-w-4xl mx-auto px-8 py-12">
+                <div id="content" class="markdown-content"></div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Certification configuration
+        const CERT_ID = 'saa';
+        const CERT_BASE_PATH = '../content/certifications/saa';
+
+        // Document structure - maps to actual files
+        const documents = [
+            {
+                title: 'Overview',
+                file: 'README.md',
+                path: `${CERT_BASE_PATH}/README.md`
+            },
+            {
+                title: 'Notes',
+                children: [
+                    {
+                        title: 'Networking',
+                        file: 'networking.md',
+                        path: `${CERT_BASE_PATH}/notes/networking.md`
+                    },
+                    {
+                        title: 'IAM',
+                        file: 'iam.md',
+                        path: `${CERT_BASE_PATH}/notes/iam.md`
+                    },
+                    {
+                        title: 'Well-Architected Framework',
+                        file: 'well-architected.md',
+                        path: `${CERT_BASE_PATH}/notes/well-architected.md`
+                    }
+                ]
+            }
+        ];
+
+        // State
+        let currentDoc = null;
+        let allDocuments = [];
+        let searchIndex = null;
+
+        // Initialize
+        window.onload = function() {
+            buildDocumentList();
+            buildSearchIndex();
+            loadDocument(documents[0].path);
+        };
+
+        // Build document list in sidebar
+        function buildDocumentList() {
+            const docList = document.getElementById('doc-list');
+            docList.innerHTML = '';
+
+            documents.forEach(doc => {
+                if (doc.children) {
+                    // Folder
+                    const folderDiv = document.createElement('div');
+                    folderDiv.className = 'mb-2';
+
+                    const folderHeader = document.createElement('div');
+                    folderHeader.className = 'px-3 py-2 text-sm font-mono font-semibold text-gray-400 uppercase';
+                    folderHeader.textContent = doc.title;
+                    folderDiv.appendChild(folderHeader);
+
+                    doc.children.forEach(child => {
+                        const item = createDocItem(child);
+                        folderDiv.appendChild(item);
+                        allDocuments.push(child);
+                    });
+
+                    docList.appendChild(folderDiv);
+                } else {
+                    // Single document
+                    const item = createDocItem(doc);
+                    docList.appendChild(item);
+                    allDocuments.push(doc);
+                }
+            });
+        }
+
+        // Create document item
+        function createDocItem(doc) {
+            const item = document.createElement('div');
+            item.className = 'sidebar-item px-3 py-2 text-sm text-gray-300 cursor-pointer rounded font-mono';
+            item.textContent = doc.title;
+            item.onclick = () => loadDocument(doc.path);
+            item.dataset.path = doc.path;
+            return item;
+        }
+
+        // Load markdown document
+        async function loadDocument(path) {
+            try {
+                const response = await fetch(path);
+                if (!response.ok) throw new Error('Document not found');
+
+                const markdown = await response.text();
+                const html = marked.parse(markdown);
+
+                document.getElementById('content').innerHTML = html;
+                currentDoc = path;
+
+                // Update active state
+                document.querySelectorAll('.sidebar-item').forEach(item => {
+                    item.classList.remove('active');
+                    if (item.dataset.path === path) {
+                        item.classList.add('active');
+                    }
+                });
+
+                // Scroll to top
+                window.scrollTo(0, 0);
+
+                // Close mobile sidebar
+                if (window.innerWidth < 768) {
+                    document.querySelector('.sidebar').classList.remove('open');
+                }
+            } catch (error) {
+                document.getElementById('content').innerHTML = `
+                    <div class="text-center py-12">
+                        <svg class="w-16 h-16 mx-auto text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <p class="text-gray-400">Document not found</p>
+                        <p class="text-gray-600 text-sm mt-2">${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Build search index using Fuse.js
+        function buildSearchIndex() {
+            // Flatten all documents for search
+            const searchDocs = allDocuments.map(doc => ({
+                title: doc.title,
+                path: doc.path,
+                file: doc.file
+            }));
+
+            // Create Fuse instance
+            const options = {
+                keys: ['title'],
+                threshold: 0.3,
+                includeScore: true
+            };
+
+            searchIndex = new Fuse(searchDocs, options);
+        }
+
+        // Perform search
+        function performSearch() {
+            const query = document.getElementById('search-input').value;
+            const resultsDiv = document.getElementById('search-results');
+
+            if (!query || query.length < 2) {
+                resultsDiv.classList.add('hidden');
+                return;
+            }
+
+            const results = searchIndex.search(query);
+
+            if (results.length === 0) {
+                resultsDiv.innerHTML = '<div class="p-3 text-sm text-gray-500">No results found</div>';
+                resultsDiv.classList.remove('hidden');
+                return;
+            }
+
+            resultsDiv.innerHTML = results.slice(0, 5).map(result => `
+                <div class="search-result p-3 border-l-2 border-transparent hover:border-primary" onclick="loadDocument('${result.item.path}')">
+                    <div class="text-sm font-mono text-gray-200">${result.item.title}</div>
+                    <div class="text-xs text-gray-500 mt-1">${result.item.file}</div>
+                </div>
+            `).join('');
+
+            resultsDiv.classList.remove('hidden');
+        }
+
+        // Toggle sidebar on mobile
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('open');
+        }
+
+        // Configure marked options
+        marked.setOptions({
+            highlight: function(code, lang) {
+                return code;
+            },
+            breaks: true,
+            gfm: true
+        });
+    </script>
+</body>
+</html>

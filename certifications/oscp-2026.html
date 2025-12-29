@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSCP Plan 2026 - Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        mono: ['JetBrains Mono', 'monospace'],
+                        sans: ['IBM Plex Sans', 'sans-serif']
+                    },
+                    colors: {
+                        primary: '#7C3AED',
+                        secondary: '#06B6D4',
+                        accent: '#A78BFA',
+                        dark: {
+                            900: '#0A0A0F',
+                            800: '#121218',
+                            700: '#1A1A24',
+                            600: '#2D2D3A'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+        }
+
+        .sidebar-item {
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-item:hover {
+            background: rgba(124, 58, 237, 0.1);
+            border-left: 3px solid #7C3AED;
+        }
+
+        .sidebar-item.active {
+            background: rgba(124, 58, 237, 0.2);
+            border-left: 3px solid #7C3AED;
+        }
+
+        .markdown-content {
+            line-height: 1.8;
+        }
+
+        .markdown-content h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #e5e7eb;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .markdown-content h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #d1d5db;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .markdown-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: #9ca3af;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .markdown-content h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            color: #9ca3af;
+        }
+
+        .markdown-content p {
+            margin-bottom: 1rem;
+            color: #d1d5db;
+        }
+
+        .markdown-content ul, .markdown-content ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            color: #d1d5db;
+        }
+
+        .markdown-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .markdown-content code {
+            background: rgba(239, 68, 68, 0.1);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9em;
+            color: #fca5a5;
+        }
+
+        .markdown-content pre {
+            background: #1a1a24;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .markdown-content pre code {
+            background: transparent;
+            padding: 0;
+            color: #e5e7eb;
+        }
+
+        .markdown-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        .markdown-content th, .markdown-content td {
+            border: 1px solid #2d2d3a;
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .markdown-content th {
+            background: rgba(239, 68, 68, 0.1);
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .markdown-content td {
+            color: #d1d5db;
+        }
+
+        .markdown-content a {
+            color: #06B6D4;
+            text-decoration: none;
+        }
+
+        .markdown-content a:hover {
+            text-decoration: underline;
+        }
+
+        .markdown-content blockquote {
+            border-left: 4px solid #EF4444;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: #9ca3af;
+            font-style: italic;
+        }
+
+        .search-result {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .search-result:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .sidebar-toggle {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                position: fixed;
+                z-index: 50;
+                height: 100vh;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-toggle {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body class="bg-dark-900 text-gray-100">
+    <!-- Mobile Menu Toggle -->
+    <button onclick="toggleSidebar()" class="sidebar-toggle fixed top-4 left-4 z-50 bg-red-500/20 p-3 rounded-lg border border-red-500/30">
+        <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+    </button>
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="sidebar w-80 bg-dark-800 border-r border-dark-600 overflow-y-auto">
+            <div class="p-6">
+                <!-- Back to Portfolio -->
+                <a href="../portfolio.html#certifications" class="flex items-center text-secondary hover:text-primary transition-colors mb-6">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    <span class="font-mono text-sm">Back to Certifications</span>
+                </a>
+
+                <!-- Header -->
+                <div class="mb-6">
+                    <div class="flex items-center mb-2">
+                        <svg class="w-8 h-8 text-red-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                        <div>
+                            <h1 class="text-lg font-mono font-bold text-gray-100">OSCP Plan 2026</h1>
+                            <p class="text-xs text-gray-400">Offensive Security Journey</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search -->
+                <div class="mb-6">
+                    <div class="relative">
+                        <input
+                            type="text"
+                            id="search-input"
+                            placeholder="Search documentation..."
+                            class="w-full bg-dark-700 text-gray-100 px-4 py-2 pl-10 rounded-lg border border-dark-600 focus:border-red-500 focus:outline-none font-mono text-sm"
+                            oninput="performSearch()"
+                        >
+                        <svg class="absolute left-3 top-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+
+                    <!-- Search Results -->
+                    <div id="search-results" class="mt-2 hidden"></div>
+                </div>
+
+                <!-- Document List -->
+                <div class="space-y-1">
+                    <h3 class="text-xs font-mono font-semibold text-gray-500 uppercase mb-2 px-3">Documentation</h3>
+                    <div id="doc-list"></div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto">
+            <div class="max-w-4xl mx-auto px-8 py-12">
+                <div id="content" class="markdown-content"></div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Certification configuration
+        const CERT_ID = 'oscp-2026';
+        const CERT_BASE_PATH = '../content/certifications/oscp-2026';
+
+        // Document structure - maps to actual files
+        const documents = [
+            {
+                title: 'Journey Overview',
+                file: 'README.md',
+                path: `${CERT_BASE_PATH}/README.md`
+            },
+            {
+                title: 'Roadmap',
+                file: 'roadmap.md',
+                path: `${CERT_BASE_PATH}/roadmap.md`
+            },
+            {
+                title: 'Labs',
+                children: [
+                    {
+                        title: 'Lab 01: Linux Enumeration & PrivEsc',
+                        file: 'lab-01.md',
+                        path: `${CERT_BASE_PATH}/labs/lab-01.md`
+                    },
+                    {
+                        title: 'Lab 02: Buffer Overflow',
+                        file: 'lab-02.md',
+                        path: `${CERT_BASE_PATH}/labs/lab-02.md`
+                    }
+                ]
+            }
+        ];
+
+        // State
+        let currentDoc = null;
+        let allDocuments = [];
+        let searchIndex = null;
+
+        // Initialize
+        window.onload = function() {
+            buildDocumentList();
+            buildSearchIndex();
+            loadDocument(documents[0].path);
+        };
+
+        // Build document list in sidebar
+        function buildDocumentList() {
+            const docList = document.getElementById('doc-list');
+            docList.innerHTML = '';
+
+            documents.forEach(doc => {
+                if (doc.children) {
+                    // Folder
+                    const folderDiv = document.createElement('div');
+                    folderDiv.className = 'mb-2';
+
+                    const folderHeader = document.createElement('div');
+                    folderHeader.className = 'px-3 py-2 text-sm font-mono font-semibold text-gray-400 uppercase';
+                    folderHeader.textContent = doc.title;
+                    folderDiv.appendChild(folderHeader);
+
+                    doc.children.forEach(child => {
+                        const item = createDocItem(child);
+                        folderDiv.appendChild(item);
+                        allDocuments.push(child);
+                    });
+
+                    docList.appendChild(folderDiv);
+                } else {
+                    // Single document
+                    const item = createDocItem(doc);
+                    docList.appendChild(item);
+                    allDocuments.push(doc);
+                }
+            });
+        }
+
+        // Create document item
+        function createDocItem(doc) {
+            const item = document.createElement('div');
+            item.className = 'sidebar-item px-3 py-2 text-sm text-gray-300 cursor-pointer rounded font-mono';
+            item.textContent = doc.title;
+            item.onclick = () => loadDocument(doc.path);
+            item.dataset.path = doc.path;
+            return item;
+        }
+
+        // Load markdown document
+        async function loadDocument(path) {
+            try {
+                const response = await fetch(path);
+                if (!response.ok) throw new Error('Document not found');
+
+                const markdown = await response.text();
+                const html = marked.parse(markdown);
+
+                document.getElementById('content').innerHTML = html;
+                currentDoc = path;
+
+                // Update active state
+                document.querySelectorAll('.sidebar-item').forEach(item => {
+                    item.classList.remove('active');
+                    if (item.dataset.path === path) {
+                        item.classList.add('active');
+                    }
+                });
+
+                // Scroll to top
+                window.scrollTo(0, 0);
+
+                // Close mobile sidebar
+                if (window.innerWidth < 768) {
+                    document.querySelector('.sidebar').classList.remove('open');
+                }
+            } catch (error) {
+                document.getElementById('content').innerHTML = `
+                    <div class="text-center py-12">
+                        <svg class="w-16 h-16 mx-auto text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <p class="text-gray-400">Document not found</p>
+                        <p class="text-gray-600 text-sm mt-2">${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Build search index using Fuse.js
+        function buildSearchIndex() {
+            // Flatten all documents for search
+            const searchDocs = allDocuments.map(doc => ({
+                title: doc.title,
+                path: doc.path,
+                file: doc.file
+            }));
+
+            // Create Fuse instance
+            const options = {
+                keys: ['title'],
+                threshold: 0.3,
+                includeScore: true
+            };
+
+            searchIndex = new Fuse(searchDocs, options);
+        }
+
+        // Perform search
+        function performSearch() {
+            const query = document.getElementById('search-input').value;
+            const resultsDiv = document.getElementById('search-results');
+
+            if (!query || query.length < 2) {
+                resultsDiv.classList.add('hidden');
+                return;
+            }
+
+            const results = searchIndex.search(query);
+
+            if (results.length === 0) {
+                resultsDiv.innerHTML = '<div class="p-3 text-sm text-gray-500">No results found</div>';
+                resultsDiv.classList.remove('hidden');
+                return;
+            }
+
+            resultsDiv.innerHTML = results.slice(0, 5).map(result => `
+                <div class="search-result p-3 border-l-2 border-transparent hover:border-red-500" onclick="loadDocument('${result.item.path}')">
+                    <div class="text-sm font-mono text-gray-200">${result.item.title}</div>
+                    <div class="text-xs text-gray-500 mt-1">${result.item.file}</div>
+                </div>
+            `).join('');
+
+            resultsDiv.classList.remove('hidden');
+        }
+
+        // Toggle sidebar on mobile
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('open');
+        }
+
+        // Configure marked options
+        marked.setOptions({
+            highlight: function(code, lang) {
+                return code;
+            },
+            breaks: true,
+            gfm: true
+        });
+    </script>
+</body>
+</html>

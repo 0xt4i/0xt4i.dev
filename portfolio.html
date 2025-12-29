@@ -486,57 +486,39 @@
                 </p>
             </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- AWS Certification Badge -->
-                <div class="badge-card bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl p-6 text-center" onclick="openModal('aws-cert')">
-                    <div class="bg-gradient-to-br from-orange-500/20 to-orange-600/20 rounded-lg p-8 mb-4">
-                        <svg class="w-20 h-20 mx-auto text-orange-500" fill="currentColor" viewBox="0 0 24 24">
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- AWS SAA Certification Badge -->
+                <div class="badge-card bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl p-8 text-center" onclick="window.location.href='certifications/saa.html'">
+                    <div class="bg-gradient-to-br from-orange-500/20 to-orange-600/20 rounded-lg p-10 mb-6">
+                        <svg class="w-24 h-24 mx-auto text-orange-500" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M6.763 10.036c0 .296.032.535.088.71.064.176.144.368.256.576.04.063.056.127.056.183 0 .08-.048.16-.152.24l-.503.335c-.072.048-.144.072-.208.072-.08 0-.16-.04-.239-.112-.112-.12-.207-.248-.279-.384-.072-.144-.144-.304-.224-.488-.56.66-1.263.988-2.095.988-.599 0-1.079-.17-1.431-.517-.353-.344-.528-.804-.528-1.375 0-.608.215-1.103.656-1.471.44-.368 1.023-.552 1.759-.552.247 0 .503.016.76.056.264.04.535.088.815.152v-.503c0-.52-.104-.887-.32-1.095-.208-.208-.568-.312-1.088-.312-.24 0-.487.032-.744.08-.255.048-.503.12-.735.2-.112.04-.191.064-.247.072-.056.008-.096.016-.128.016-.112 0-.168-.08-.168-.248v-.391c0-.128.016-.224.056-.28.04-.056.112-.104.216-.152.24-.127.527-.231.855-.328.336-.096.687-.144 1.063-.144.808 0 1.399.184 1.783.56.376.368.568.927.568 1.679v2.207zm-2.894 1.087c.24 0 .487-.04.751-.127.264-.088.496-.256.696-.512.12-.151.207-.32.256-.506.048-.184.08-.407.08-.662v-.32c-.216-.047-.44-.087-.671-.111-.231-.024-.455-.04-.671-.04-.479 0-.831.096-1.055.287-.224.192-.336.463-.336.807 0 .328.08.575.247.743.16.175.431.255.743.255zm5.783 1.535c-.144 0-.24-.024-.304-.08-.064-.048-.12-.16-.168-.311L7.586 5.55c-.048-.16-.072-.264-.072-.32 0-.128.064-.2.191-.2h.783c.151 0 .255.025.311.08.064.048.112.16.16.312l1.343 5.295 1.247-5.295c.04-.16.088-.264.151-.312.064-.048.175-.08.319-.08h.64c.151 0 .255.025.319.08.064.048.12.16.151.312l1.264 5.358 1.383-5.358c.048-.16.104-.264.16-.312.063-.048.167-.08.311-.08h.743c.128 0 .2.065.2.2 0 .04-.009.08-.017.128-.008.048-.024.12-.056.216l-1.927 6.717c-.048.16-.104.263-.168.311-.064.056-.168.08-.312.08h-.687c-.151 0-.255-.024-.319-.08-.064-.048-.12-.159-.151-.311L13.48 7.558l-1.231 5.286c-.04.16-.088.264-.151.312-.064.056-.175.08-.32.08h-.687zm9.207.191c-.735 0-1.471-.088-2.127-.256-.655-.168-1.159-.368-1.511-.599-.127-.088-.215-.184-.247-.28-.032-.096-.056-.2-.056-.312v-.407c0-.168.064-.248.183-.248.048 0 .096.008.144.024.048.016.12.048.2.08.271.12.559.215.855.279.304.072.6.104.903.104.506 0 .895-.088 1.167-.264.271-.176.415-.423.415-.743 0-.216-.064-.4-.2-.543-.135-.144-.431-.272-.791-.4l-1.135-.36c-.575-.183-1-.455-1.247-.807-.247-.353-.375-.743-.375-1.168 0-.336.072-.631.216-.895.144-.264.336-.487.575-.671.24-.184.52-.32.848-.415.327-.096.679-.136 1.054-.136.144 0 .296.008.44.024.151.016.296.04.431.064.128.024.255.056.375.088.12.032.216.064.287.096.104.048.183.096.232.151.048.049.08.136.08.256v.375c0 .168-.064.256-.184.256-.063 0-.167-.024-.303-.08-.48-.216-1.023-.32-1.631-.32-.455 0-.815.072-1.055.216-.24.144-.36.368-.36.679 0 .216.072.407.215.559.144.151.44.287.808.415l1.111.36c.567.183.983.439 1.223.767.24.329.36.703.36 1.119 0 .343-.072.655-.207.927-.144.272-.336.511-.591.703-.248.2-.559.343-.927.447-.36.111-.767.167-1.222.167z"/>
                         </svg>
                     </div>
-                    <h3 class="text-lg font-mono font-semibold text-gray-100 mb-2">AWS Solutions Architect</h3>
-                    <p class="text-gray-400 text-sm mb-2">Associate Level</p>
-                    <p class="text-xs font-mono text-gray-500 mb-3">Cloud Infrastructure Path • 1/2</p>
-                    <span class="inline-block bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-mono">Click to read story</span>
-                </div>
-
-                <!-- Kubernetes CKA Badge -->
-                <div class="badge-card bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl p-6 text-center" onclick="openModal('cka-cert')">
-                    <div class="bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-lg p-8 mb-4">
-                        <svg class="w-20 h-20 mx-auto text-blue-500" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M10.204 14.35l.007.01-.999 2.413a5.171 5.171 0 0 1-2.075-2.597l2.578-.437.004.005a.44.44 0 0 1 .484.606zm-.833-2.129a.44.44 0 0 0 .173-.756l.002-.011-1.996-1.599a5.18 5.18 0 0 0-.342 3.528l2.168-.372-.005-.01a.44.44 0 0 0-.001-.78zm8.341-3.584a.44.44 0 0 0 .609-.031l.004-.005 1.91-1.505a5.191 5.191 0 0 0-3.671-1.315l-.039 2.647.006.001a.44.44 0 0 0 .18.208zm-1.904 2.73a.44.44 0 0 0 .145-.77l.003-.005-.604-2.441a5.19 5.19 0 0 0-2.628 1.997l2.084 1.217-.001.011a.44.44 0 0 0 .999-.009zm-5.488-1.958a.44.44 0 0 0 .35-.736l-.004-.005-1.651-2.074a5.183 5.183 0 0 0-2.656 2.008l2.625 1.476.006-.001a.44.44 0 0 0 .33-.668zm-3.338 6.121l.008.009.02 2.465a5.185 5.185 0 0 0 3.474-.89l-1.612-2.05-.002.001a.44.44 0 0 0-.717-.007l-.171.472zm8.657-5.093a.44.44 0 0 0-.411-.763l-.008.002-2.635.459a5.194 5.194 0 0 0 .035 3.649l2.594-1.517.002-.009a.44.44 0 0 0 .423-.821zm-.964 4.784l.006.009 1.602 2.056a5.173 5.173 0 0 0 2.06-2.601l-2.578-.438-.004.005a.44.44 0 0 0-.609.031l-.477 .938zm-7.004-4.37a.44.44 0 0 0-.144.766l-.005.008.64 2.436a5.19 5.19 0 0 0 2.63-1.99l-2.121-1.22zm7.046-1.175a.44.44 0 0 0 .015-.979l.007-.006-.604-2.381a5.183 5.183 0 0 0-3.522.899l1.626 2.06.004-.005a.44.44 0 0 0 .749.014l.725-1.602z"/>
-                        </svg>
+                    <h3 class="text-xl font-mono font-semibold text-gray-100 mb-3">AWS Solutions Architect Associate</h3>
+                    <p class="text-gray-400 text-base mb-3">SAA-C03 Certified</p>
+                    <div class="flex items-center justify-center gap-2 mb-4">
+                        <span class="inline-block bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-xs font-mono">Certified</span>
+                        <span class="text-gray-500 text-xs">•</span>
+                        <span class="text-gray-500 text-xs font-mono">March 2024</span>
                     </div>
-                    <h3 class="text-lg font-mono font-semibold text-gray-100 mb-2">Certified Kubernetes Admin</h3>
-                    <p class="text-gray-400 text-sm mb-2">CKA</p>
-                    <p class="text-xs font-mono text-gray-500 mb-3">Cloud Infrastructure Path • 2/2</p>
-                    <span class="inline-block bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-mono">Click to read story</span>
+                    <span class="inline-block bg-primary/20 text-primary px-4 py-2 rounded-full text-sm font-mono hover:bg-primary/30 transition-colors">Read story & notes →</span>
                 </div>
 
-                <!-- OSCP Badge -->
-                <div class="badge-card bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl p-6 text-center" onclick="openModal('oscp-cert')">
-                    <div class="bg-gradient-to-br from-red-500/20 to-red-600/20 rounded-lg p-8 mb-4">
-                        <svg class="w-20 h-20 mx-auto text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <!-- OSCP Plan 2026 Badge -->
+                <div class="badge-card bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl p-8 text-center" onclick="window.location.href='certifications/oscp-2026.html'">
+                    <div class="bg-gradient-to-br from-red-500/20 to-red-600/20 rounded-lg p-10 mb-6">
+                        <svg class="w-24 h-24 mx-auto text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                         </svg>
                     </div>
-                    <h3 class="text-lg font-mono font-semibold text-gray-100 mb-2">Offensive Security</h3>
-                    <p class="text-gray-400 text-sm mb-2">OSCP</p>
-                    <p class="text-xs font-mono text-gray-500 mb-3">Security Path • 1/2</p>
-                    <span class="inline-block bg-secondary/20 text-secondary px-3 py-1 rounded-full text-xs font-mono">Click to read story</span>
-                </div>
-
-                <!-- CompTIA Security+ Badge -->
-                <div class="badge-card bg-dark-800/50 backdrop-blur-sm border border-primary/20 rounded-xl p-6 text-center" onclick="openModal('security-plus')">
-                    <div class="bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-lg p-8 mb-4">
-                        <svg class="w-20 h-20 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                        </svg>
+                    <h3 class="text-xl font-mono font-semibold text-gray-100 mb-3">Offensive Security Certified Professional</h3>
+                    <p class="text-gray-400 text-base mb-3">OSCP Journey</p>
+                    <div class="flex items-center justify-center gap-2 mb-4">
+                        <span class="inline-block bg-secondary/20 text-secondary px-3 py-1 rounded-full text-xs font-mono">Plan 2026</span>
+                        <span class="text-gray-500 text-xs">•</span>
+                        <span class="text-gray-500 text-xs font-mono">In Progress</span>
                     </div>
-                    <h3 class="text-lg font-mono font-semibold text-gray-100 mb-2">CompTIA Security+</h3>
-                    <p class="text-gray-400 text-sm mb-2">Certified</p>
-                    <p class="text-xs font-mono text-gray-500 mb-3">Security Path • 2/2</p>
-                    <span class="inline-block bg-secondary/20 text-secondary px-3 py-1 rounded-full text-xs font-mono">Click to read story</span>
+                    <span class="inline-block bg-secondary/20 text-secondary px-4 py-2 rounded-full text-sm font-mono hover:bg-secondary/30 transition-colors">Read roadmap & labs →</span>
                 </div>
             </div>
         </div>
