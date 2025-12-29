@@ -114,7 +114,7 @@ async function loadBlogPostsForSearch() {
             tags: post.tags,
             category: post.category,
             readTime: post.readTime,
-            link: `portfolio.html#blog-${post.folder}`
+            link: `index.html#blog-${post.folder}`
         }));
     } catch (error) {
         console.error('Error loading blog posts for search:', error);
